@@ -41,7 +41,7 @@ jobs:
         pytest --alluredir=allure-results
       
     - name: Allure Report action from marketplace
-      uses: simple-elf/allure-report-action@master
+      uses: simple-elf/allure-report-action@conduit_BoPe
       if: always()
       with:
         allure_results: allure-results
