@@ -5,7 +5,7 @@ name: Conduit - Python application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "conduit_BoPe" ]
   
 permissions:
   contents: write
