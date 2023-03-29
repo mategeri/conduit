@@ -16,11 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Docker build for test
-      run: docker-compose up -d    
-    - name: Sleep for 60 seconds
-      run: sleep 60s
-      shell: bash  
+    
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
       uses: actions/setup-python@v4
@@ -34,6 +30,12 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --alluredir=allure-results
+        
+    - name: Docker build for test
+      run: docker-compose up -d    
+    - name: Sleep for 60 seconds
+      run: sleep 60s
+      shell: bash  
         
     - name: Allure Report action from marketplace
       uses: simple-elf/allure-report-action@master
