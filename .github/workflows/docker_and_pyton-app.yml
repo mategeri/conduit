@@ -30,13 +30,7 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --alluredir=allure-results
-        
-    - name: Docker build for test
-      run: docker-compose up -d    
-    - name: Sleep for 60 seconds
-      run: sleep 60s
-      shell: bash  
-        
+      
     - name: Allure Report action from marketplace
       uses: simple-elf/allure-report-action@master
       if: always()
