@@ -5,11 +5,9 @@ name: Conduit - Python application
 
 on:
   push:
-    branches: [ "conduit_BoPe" ]
+    branches: [ "master" ]
     
-  pull_request:
-    branches: [ "conduit_BoPe" ]
-  
+
 permissions:
   contents: write
 
@@ -41,7 +39,7 @@ jobs:
         pytest --alluredir=allure-results
       
     - name: Allure Report action from marketplace
-      uses: simple-elf/allure-report-action@conduit_BoPe
+      uses: simple-elf/allure-report-action@master
       if: always()
       with:
         allure_results: allure-results
