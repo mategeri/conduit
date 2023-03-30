@@ -19,7 +19,6 @@ class TestSingUp(object):
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('window-position=-1000,0')
         self.browser = webdriver.Chrome(service=service, options=options)
-
         URL = "http://localhost:1667/"
         self.browser.get(URL)
         self.browser.maximize_window()
