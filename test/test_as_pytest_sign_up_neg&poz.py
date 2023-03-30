@@ -21,15 +21,18 @@ class TestSingUp(object):
         self.browser.get(URL)
         self.browser.maximize_window()
 
-        WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/register"]')))
-        sign_up_mnu_btn = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
-        sign_up_mnu_btn.click()
+        # WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/register"]')))
+        # sign_up_mnu_btn = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
+        # sign_up_mnu_btn.click()
 
     def teardown_mwthod(self):
         self.browser.quit()
 
     def test_sign_up_negativ_and_pozitiv(self, Username_n = ['user1'], Email_n = ['user1@hotmail.com'], Password = 'Userpass1', reg_succ = ''):
 
+        WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/register"]')))
+        sign_up_mnu_btn = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
+        sign_up_mnu_btn.click()
 
         ### Inputmezők kigyűjtése
         input_Username = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
@@ -87,6 +90,10 @@ class TestSingUp(object):
 
     def test_sign_up_direct_negativ(self, Username_nope = 'user', Email_nope = 'user@hotmail.com', Password_nope = ''):
         ### belépési kisérlet jelszó nélkül - direkt negatív ág
+
+        WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/register"]')))
+        sign_up_mnu_btn = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
+        sign_up_mnu_btn.click()
 
         ### Inputmezők kigyűjtése
         input_Username = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
