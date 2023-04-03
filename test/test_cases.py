@@ -57,7 +57,32 @@ class TestConduit(object):
 
     #TC4 - Adatok listázása
 
+
     #TC5 - Több oldalas lista bejárása
+
+    def test_all_pages(self):
+
+        signin_button = self.browser.find_element(By.XPATH, '//a[@href="#/login"]')
+        signin_button.click()
+
+        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+        password_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
+        confirm_signin = self.browser.find_element(By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
+
+        email_input.send_keys(self.email)
+        password_input.send_keys(self.password)
+        confirm_signin.click()
+        time.sleep(1)
+
+        page_numbers = self.browser.find_elements(By.XPATH, '//a[@class="page-link"]')
+
+        pages = []
+        for link in page_numbers:
+            link.click()
+            pages.append(link)
+
+        assert len(page_numbers) == len(pages)
+
 
     #TC6 - Új adat bevitel
 
@@ -87,4 +112,7 @@ class TestConduit(object):
 
         logout_button = self.browser.find_element(By.XPATH, '//a[contains(.,"Log out")]')
         logout_button.click()
+
+
+
 
