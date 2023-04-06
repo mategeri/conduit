@@ -33,7 +33,7 @@ class TestConduit(object):
 
     #TC1 - Regisztráció
 
-     def test_registration(self):
+    def test_registration(self):
         
         register_button = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
         register_button.click()
