@@ -6,7 +6,7 @@ name: Conduit Vizsgaremek Test
 on:
   push:
     branches: [ "master" ]
-    
+  
 permissions:
   contents: write
 
@@ -14,10 +14,13 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    
 
     steps:
+  
     - uses: actions/checkout@v3
-    - run: docker-compose up -d
+    - name: Docker build for test
+      run: docker-compose up -d
     - name: Sleep for 60 seconds
       run: sleep 60s
       shell: bash
@@ -29,10 +32,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi 
     - name: Test with pytest
       run: |
-        pytest --alluredir=allure-results
+        pytest --alluredir=allure-results       
     - name: Allure Report action from marketplace
       uses: simple-elf/allure-report-action@master
       if: always()
@@ -40,6 +43,7 @@ jobs:
         allure_results: allure-results
         allure_history: allure-history
         keep_reports: 20
+    
     - name: Deploy report to Github Pages
       if: always()
       uses: peaceiris/actions-gh-pages@v2
