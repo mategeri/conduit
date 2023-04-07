@@ -28,60 +28,9 @@ class TestConduit(object):
 
     def teardown_method(self):
         self.browser.quit()
-        
+        #self.browser.quit()
 
-
-    #TC1 - Regisztráció
-
-    def test_registration(self):
-        
-        register_button = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
-        register_button.click()
-
-        
-        username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
-        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-        password_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
-        confirm_signup = self.browser.find_element(By.XPATH, '//button[text()="Sign up"]')
-
-        username_input.send_keys(self.username)
-        email_input.send_keys(self.email)
-        password_input.send_keys(self.password)
-        confirm_signup.click()
-        time.sleep(1)
-
-       
-        nav_links = WebDriverWait(self.browser, 5).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[class="nav-link"]')))
-        time.sleep(1)
-        profile = nav_links[2]
-        assert profile.text == self.username
-
-
-
-    #TC2 - Bejelentkezés
-
-    def test_login(self):
-        signin_button = self.browser.find_element(By.XPATH, '//a[@href="#/login"]')
-        signin_button.click()
-
-        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-        password_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
-        confirm_signin = self.browser.find_element(By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
-
-        email_input.send_keys(self.email)
-        password_input.send_keys(self.password)
-        confirm_signin.click()
-        time.sleep(1)
-
-        nav_links = WebDriverWait(self.browser, 5).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[class="nav-link"]')))
-        time.sleep(1)
-        profile = nav_links[2]
-        assert profile.text == self.username
-
-
-    #TC3 - Adatkezelési nyilatkozat használata
+# TC1 - Adatkezelési nyilatkozat használata
 
     def test_cookies(self):
         decline_btn = self.browser.find_element(By.XPATH,
@@ -104,90 +53,50 @@ class TestConduit(object):
         assert cookie_accept["value"] == "accept"
         time.sleep(2)
 
-    #TC4 - Adatok listázása
+    #TC2 - Regisztráció
+
+    # def generate_random_username(length=10):
+    #     return ''.join(random.choices(string.ascii_lowercase, k=length))
+    #
+    # def generate_random_email():
+    #     username = generate_random_username()
+    #     return f"{username}@gmail.com"
+    #
+    # def generate_random_password(length=10):
+    #     chars = string.ascii_letters + '@' + string.digits
+    #     password = ''.join(random.choices(chars, k=length))
+    #     return password
+
+    # def test_registration(browser):
+    #     # Navigate to registration page
+    #     browser.get("http://localhost:1667/#/register")
+    #
+    #     # Generate random username, email, and password
+    #     username = generate_random_username()
+    #     email = generate_random_email()
+    #     password = generate_random_password()
+    #
+    #     # Fill in registration form
+    #     username_input = WebDriverWait(browser, 5).until(
+    #         EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Username"]')))
+    #     email_input = browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+    #     password_input = browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
+    #     submit_button = browser.find_element(By.XPATH, '//button[@type="submit"]')
+    #
+    #     username_input.send_keys(username)
+    #     email_input.send_keys(email)
+    #     password_input.send_keys(password)
+    #     submit_button.click()
+    #
+    #     # Verify that user is logged in
+    #     nav_links = WebDriverWait(browser, 5).until(
+    #         EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[class="nav-link"]')))
+    #     assert nav_links[2].text == username
 
 
-    #TC5 - Több oldalas lista bejárása
+#TC3 - Bejelentkezés
 
-    def test_all_pages(self):
-
-        signin_button = self.browser.find_element(By.XPATH, '//a[@href="#/login"]')
-        signin_button.click()
-
-        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-        password_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
-        confirm_signin = self.browser.find_element(By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
-
-        email_input.send_keys(self.email)
-        password_input.send_keys(self.password)
-        confirm_signin.click()
-        time.sleep(1)
-
-        page_numbers = self.browser.find_elements(By.XPATH, '//a[@class="page-link"]')
-
-        pages = []
-        for link in page_numbers:
-            link.click()
-            pages.append(link)
-
-        assert len(page_numbers) == len(pages)
-
-
-    #TC6 - Új adat bevitel
-
-
-    #TC7 Ismételt és sorozatos adatbevitel adatforrásból
-
-    #     def test_create_articles(self):
-#         signin_button = self.browser.find_element(By.XPATH, '//a[@href="#/login"]')
-#         signin_button.click()
-#         email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-#         password_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
-#         confirm_signin = self.browser.find_element(By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
-
-#         email_input.send_keys(self.email)
-#         password_input.send_keys(self.password)
-#         confirm_signin.click()
-#         time.sleep(1)
-
-#         with open('datas.csv', 'r') as file:
-#             reader = csv.reader(file)
-#             next(reader)
-#             for row in reader:
-#                 title, about, article, tag = row
-
-#                 new_article_button = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
-#                 new_article_button.click()
-
-#                 WebDriverWait(self.browser, 10).until(
-#                     EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Article Title"]'))
-#                 )
-
-#                 title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
-#                 title_input.send_keys(title)
-
-#                 about_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
-#                 about_input.send_keys(about)
-
-#                 article_input = self.browser.find_element(By.XPATH,
-#                                                           '//textarea[@placeholder="Write your article (in markdown)"]')
-#                 article_input.send_keys(article)
-
-#                 tag_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Enter tags"]')
-#                 tag_input.send_keys(tag)
-#                 tag_input.send_keys(Keys.RETURN)
-
-#                 publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Publish Article")]')
-#                 publish_button.click()
-
-#                 article_title = WebDriverWait(self.browser, 10).until(
-#                     EC.presence_of_element_located((By.XPATH, '//h1'))
-#                 )
-#                 assert article_title.text == title
-
-    #TC11 Kijelentkezés
-
-    def test_logout(self):
+    def test_login(self):
         signin_button = self.browser.find_element(By.XPATH, '//a[@href="#/login"]')
         signin_button.click()
 
@@ -205,10 +114,3 @@ class TestConduit(object):
         time.sleep(1)
         profile = nav_links[2]
         assert profile.text == self.username
-
-        logout_button = self.browser.find_element(By.XPATH, '//a[contains(.,"Log out")]')
-        logout_button.click()
-
-
-
-
