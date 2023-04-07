@@ -10,10 +10,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-class TestConduit(object):
-    username = 'valami'
-    email = 'valami@gmail.com'
-    password = 'Valami01@'
+class TestConduit:
+    username = 'Tester007'
+    email = 'tester007@gmail.com'
+    password = 'James@Bond007'
 
     def setup_method(self):
         s = Service(executable_path=ChromeDriverManager().install())
@@ -69,10 +69,9 @@ class TestConduit(object):
         email_input.send_keys(self.email)
         password_input.send_keys(self.password)
         signup_button.click()
-        time.sleep(1)
-
+        time.sleep(5)
         nav_links = WebDriverWait(self.browser, 5).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[class="nav-link"]')))
-        time.sleep(1)
+        time.sleep(5)
         profile = nav_links[2]
         assert profile.text == self.username
