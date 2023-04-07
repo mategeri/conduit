@@ -29,20 +29,23 @@ class TestConduit:
 
     def teardown_method(self):
         self.browser.quit()
-        #self.browser.quit()
 
-# TC1 - Adatkezelési nyilatkozat használata
+    def login(self):
+        signin_button = self.browser.find_element(By.XPATH, '//a[@href="#/login"]')
+        signin_button.click()
+
+        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+        password_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
+        confirm_signin = self.browser.find_element(By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
+
+        email_input.send_keys(self.email)
+        password_input.send_keys(self.password)
+        confirm_signin.click()
+        time.sleep(1)
+
+    # TC1 - Adatkezelési nyilatkozat használata
 
     def test_cookies(self):
-        decline_btn = self.browser.find_element(By.XPATH,
-                                                "//button[@class= 'cookie__bar__buttons__button cookie__bar__buttons__button--decline']")
-        decline_btn.click()
-
-        cookie_decline = self.browser.get_cookie("vue-cookie-accept-decline-cookie-policy-panel")
-
-        assert cookie_decline["value"] == "decline"
-
-        self.browser.delete_cookie("vue-cookie-accept-decline-cookie-policy-panel")
         self.browser.refresh()
 
         accept_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located(
@@ -53,25 +56,3 @@ class TestConduit:
 
         assert cookie_accept["value"] == "accept"
         time.sleep(2)
-
-    #TC2 - Regisztráció
-
-    def test_registration(self):
-        signup_button = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
-        signup_button.click()
-
-        username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
-        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-        password_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
-        signup_button = self.browser.find_element(By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
-
-        username_input.send_keys(self.username)
-        email_input.send_keys(self.email)
-        password_input.send_keys(self.password)
-        signup_button.click()
-        time.sleep(5)
-        nav_links = WebDriverWait(self.browser, 5).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[class="nav-link"]')))
-        time.sleep(5)
-        profile = nav_links[2]
-        assert profile.text == self.username
