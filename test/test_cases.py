@@ -56,58 +56,19 @@ class TestConduit(object):
 
     #TC2 - Regisztráció
 
-    # def generate_random_username(length=10):
-    #     return ''.join(random.choices(string.ascii_lowercase, k=length))
-    #
-    # def generate_random_email():
-    #     username = generate_random_username()
-    #     return f"{username}@gmail.com"
-    #
-    # def generate_random_password(length=10):
-    #     chars = string.ascii_letters + '@' + string.digits
-    #     password = ''.join(random.choices(chars, k=length))
-    #     return password
+    def test_registration(self):
+        signup_button = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
+        signup_button.click()
 
-    # def test_registration(browser):
-    #     # Navigate to registration page
-    #     browser.get("http://localhost:1667/#/register")
-    #
-    #     # Generate random username, email, and password
-    #     username = generate_random_username()
-    #     email = generate_random_email()
-    #     password = generate_random_password()
-    #
-    #     # Fill in registration form
-    #     username_input = WebDriverWait(browser, 5).until(
-    #         EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Username"]')))
-    #     email_input = browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-    #     password_input = browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
-    #     submit_button = browser.find_element(By.XPATH, '//button[@type="submit"]')
-    #
-    #     username_input.send_keys(username)
-    #     email_input.send_keys(email)
-    #     password_input.send_keys(password)
-    #     submit_button.click()
-    #
-    #     # Verify that user is logged in
-    #     nav_links = WebDriverWait(browser, 5).until(
-    #         EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[class="nav-link"]')))
-    #     assert nav_links[2].text == username
-
-
-#TC3 - Bejelentkezés
-
-    def test_login(self):
-        signin_button = self.browser.find_element(By.XPATH, '//a[@href="#/login"]')
-        signin_button.click()
-
+        username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
         email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
         password_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
-        confirm_signin = self.browser.find_element(By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
+        signup_button = self.browser.find_element(By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
 
+        username_input.send_keys(self.username)
         email_input.send_keys(self.email)
         password_input.send_keys(self.password)
-        confirm_signin.click()
+        signup_button.click()
         time.sleep(1)
 
         nav_links = WebDriverWait(self.browser, 5).until(
