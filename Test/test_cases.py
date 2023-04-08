@@ -133,7 +133,7 @@ class TestConduit:
         for link in page_numbers:
             link.click()
             pages.append(link)
-
+        time.sleep(2)
         assert len(page_numbers) == len(pages)
         print("TC5 - A több oldalas lista bejárása teszteset sikeresen lefutott!")
 #
