@@ -11,15 +11,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 
 class TestConduit:
-<<<<<<< HEAD
-    username = 'Tester007'
-    email = 'tester007@gmail.com'
-    password = 'James@Bond007'
-=======
+
     username = 'james_bond'
     email = 'james_bond007@gmail.com'
-    password = 'James1007'
->>>>>>> b347475 (test_cases update)
+    password = 'James@007'
+
 
     def setup_method(self):
         s = Service(executable_path=ChromeDriverManager().install())
@@ -306,4 +302,3 @@ class TestConduit:
         assert login_link.is_displayed(), "Login link is not displayed"
         print("TC11 - A kijelentkezés teszteset sikeresen lefutott!")
 
->>>>>>> b347475 (test_cases update)
