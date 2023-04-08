@@ -95,33 +95,33 @@ class TestConduit:
         assert profile.text == self.username
         print("TC3 - A bejelentkezés teszteset sikeresen lefutott!")
 #
-#     # TC4 - Adatok listázása
-#     def test_data_list(self):
-#         self.login()
-#         time.sleep(2)
-#
-#         # Global Feed
-#         global_feed_link = self.browser.find_element(By.XPATH, '//a[@href="#/" and @aria-current="page"]')
-#         global_feed_link.click()
-#         time.sleep(2)
-#         articles = self.browser.find_elements(By.XPATH,
-#                                               '//div[contains(@class, "home-page")]//div[contains(@class, "article-preview")]//h1')
-#         article_titles = [article.text for article in articles[:10]]
-#
-#         print("\nA global feed első 10 bejegyzése:")
-#         for i, title in enumerate(article_titles, start=1):
-#             print(f"{i}. {title}")
-#         time.sleep(2)
-#
-#         self.browser.refresh()
-#         time.sleep(2)
-#
-#         refreshed_articles = self.browser.find_elements(By.XPATH,
-#                                                         '//div[contains(@class, "home-page")]//div[contains(@class, "article-preview")]//h1')
-#
-#         refreshed_article_titles = [article.text for article in refreshed_articles[:10]]
-#         assert article_titles == refreshed_article_titles
-#         print("TC4 - Adatok listázása teszteset sikeresen lefutott!")
+    # TC4 - Adatok listázása
+    def test_data_list(self):
+        self.login()
+        time.sleep(2)
+
+        # Global Feed
+        global_feed_link = self.browser.find_element(By.XPATH, '//a[@href="#/" and @aria-current="page"]')
+        global_feed_link.click()
+        time.sleep(2)
+        articles = self.browser.find_elements(By.XPATH,
+                                              '//div[contains(@class, "home-page")]//div[contains(@class, "article-preview")]//h1')
+        article_titles = [article.text for article in articles[:10]]
+
+        print("\nA global feed első 10 bejegyzése:")
+        for i, title in enumerate(article_titles, start=1):
+            print(f"{i}. {title}")
+        time.sleep(2)
+
+        self.browser.refresh()
+        time.sleep(2)
+
+        refreshed_articles = self.browser.find_elements(By.XPATH,
+                                                        '//div[contains(@class, "home-page")]//div[contains(@class, "article-preview")]//h1')
+
+        refreshed_article_titles = [article.text for article in refreshed_articles[:10]]
+        assert article_titles == refreshed_article_titles
+        print("TC4 - Adatok listázása teszteset sikeresen lefutott!")
 #
 #     # TC5 - Több oldalas lista bejárása
 #
