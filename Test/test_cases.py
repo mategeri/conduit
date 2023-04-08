@@ -160,7 +160,7 @@ class TestConduit:
 
         publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(),"Publish Article")]')
         publish_button.click()
-        time.sleep(1)
+        time.sleep(2)
 
         title_elements = self.browser.find_elements(By.CSS_SELECTOR, 'h1')
         assert any(title.text == 'Új adat bevitel teszt title' for title in title_elements)
