@@ -1,6 +1,4 @@
-## 1. Sign up automatizálása
 import time
-
 import allure
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
@@ -41,7 +39,6 @@ class TestSingUp(object):
                               'Email': 'user1@hotmail.com',
                               'Password': 'Userpass1', }
                     }
-
         return inp_dict[sub_dict]
 
     def send_inputs(self, inpFields_dict, inp_dict_sub):
@@ -91,12 +88,18 @@ class TestSingUp(object):
             EC.presence_of_element_located((By.XPATH, '//button[@class="swal-button swal-button--confirm"]'))).click()
 
 
-    def check_mnuitems_length(self):
-        user_prof_btns_aft_click = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
+    # def check_mnuitems_length(self):
+    #     nav_mnu_items = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
+    #         (By.XPATH, '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')))
+    #     menusor_hossz = len(nav_mnu_items)
+    #     # print(menusor_hossz)
+    #     return menusor_hossz
+
+    def locate_navbar_items(self):
+        navbar_items = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
             (By.XPATH, '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')))
-        menusor_hossz = len(user_prof_btns_aft_click)
-        # print(menusor_hossz)
-        return menusor_hossz
+        return navbar_items
+
 
     def signin_rutin(self):
         self.useSignInButton()
@@ -110,9 +113,9 @@ class TestSingUp(object):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
         options.add_experimental_option("detach", True)
-        options.add_argument('--headless')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
+        # options.add_argument('--headless')
+        # options.add_argument('--no-sandbox')
+        # options.add_argument('--disable-dev-shm-usage')
         options.add_argument('window-position=-1000,0')
         self.browser = webdriver.Chrome(service=service, options=options)
         URL = "http://localhost:1667/"
@@ -120,9 +123,10 @@ class TestSingUp(object):
         self.browser.maximize_window()
 
     def teardown_method(self):
-        # pass
-        self.browser.quit()
+        pass
+        # self.browser.quit()
 
+# TC1: Regisztráció----------------------------------------------------------------------------------------------------------------------
     @allure.id('TC1.1. N+')
     @allure.title('Regisztrációs kisérlet - jelszó nélkül')
     def test_sign_up_direct_neg(self):
@@ -209,8 +213,7 @@ class TestSingUp(object):
                     print(f'\n{n - 1} negatív ágon lefuttatott Assert: {reg_succ_N} ({reg_succ_s_N}) után: ')
                     print(f"Assert a pozitív ágon: {actual_str['reg_succ']} ({actual_str['reg_succ_s']})")
 
-
-
+# TC2: Bejelentkezés --------------------------------------------------------------------------------------------------------------------
     @allure.id('TC2. P+')
     @allure.title('Belépés sikerességének ellenőrzése')
     def test_sign_in(self):
@@ -220,11 +223,12 @@ class TestSingUp(object):
 
         time.sleep(2)
         self.browser.refresh()
-        menusor_hossz = self.check_mnuitems_length()
+        navbar_items=self.locate_navbar_items()
+        menusor_hossz = len(navbar_items)
         if menusor_hossz == 5:  # sikeres belépés
-            # assert menusor_hossz == 5  # Pozitív ág belépésre: belépést követően a fejlécmenű elemei 5-re változnak
+            # Pozitív ág belépésre: belépést követően a fejlécmenű elemei 5-re változnak
             assert menusor_hossz == 5
-            print(f'LogIN "+" ág ellenőrzése: menuelemek száma {menusor_hossz} -> Belépés megvalósult!')
+            print(f'\nLogIN "+" ág ellenőrzése: menuelemek száma {menusor_hossz} -> Belépés megvalósult!')
 
             ### assert "Log out" gomb meglétének ellenőrzésével
             find_log_out_btn = WebDriverWait(self.browser, 5).until(
@@ -233,13 +237,13 @@ class TestSingUp(object):
             print(f'LogIN "+" ág assert 1.-> igazolt belépés: A kilépés gomb lokalizálható!', '+')
 
             ### assert "Log out" felírat meglétének ellenőrzésével
-            user_prof_btns = self.browser.find_elements(By.XPATH,
-                                                        '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')
-            log_out_btn_txt = user_prof_btns[-1].text
-            conf_text = (log_out_btn_txt.replace(' ', '')).upper()
-            assert conf_text == 'LOGOUT'
-            print(f'LogIN "+" ág assert 2. -> igazolt belépés: {log_out_btn_txt} szöveg megjelent!', '+')
+            log_out_btn_txt = navbar_items[-1].text
+            # conf_text = (log_out_btn_txt.replace(' ', '')).upper()
+            # assert conf_text == 'LOGOUT'
+            assert log_out_btn_txt == ' Log out'
+            print(f'LogIN "+" ág assert 2. -> igazolt belépés: "{log_out_btn_txt}" szöveg megjelent!', '+')
 
+# TC3: Adatkezelési nyilatkozat használata ----------------------------------------------------------------------------------------------
     @allure.id('TC3. P+')
     @allure.title('Cookie policy acceptance')
     def test_gdpr_acceptance(self):
@@ -258,6 +262,71 @@ class TestSingUp(object):
         assert accept_btn_text == expected_str['Text']
 
         accept_btn.click()
+
+# TC4:	Adatok listázása-----------------------------------------------------------------------------------------------------------------
+
+
+
+# TC5: Több oldalas lista bejárása-------------------------------------------------------------------------------------------------------
+
+
+# TC6: Új adat bevitel-------------------------------------------------------------------------------------------------------------------
+
+
+# TC7: Ismételt és sorozatos adatbevitel adatforrásból-----------------------------------------------------------------------------------
+
+
+# TC8: Meglévő adat módosítás------------------------------------------------------------------------------------------------------------
+
+
+# TC9: Adat vagy adatok törlése----------------------------------------------------------------------------------------------------------
+
+
+# TC10:	Adatok lementése felületről------------------------------------------------------------------------------------------------------
+
+
+# TC11:	Kijelentkezés--------------------------------------------------------------------------------------------------------------------
+    @allure.id('TC11. P+')
+    @allure.title('Kilépés sikerességének ellenőrzése')
+    def test_sign_out(self):
+        ### Sikeres Kijelentkezés ellenőrzése
+        # belépési rutin folyamat
+        self.signin_rutin()
+
+        time.sleep(2)
+        self.browser.refresh()
+        navbar_items = self.locate_navbar_items()
+        menusor_hossz = len(navbar_items)
+
+        if menusor_hossz == 5:  # sikeres belépés
+            assert menusor_hossz == 5
+            print(f'\nMenuelemek száma: {menusor_hossz} -> Belépés megvalósult!')
+            WebDriverWait(self.browser, 5).until(
+                EC.presence_of_element_located((By.XPATH, '//i[@class="ion-android-exit"]'))).click()
+
+        # self.browser.refresh()
+        navbar_items = self.locate_navbar_items()
+        menusor_hossz = len(navbar_items)
+        if menusor_hossz == 3:  # sikeres belépés
+            assert menusor_hossz == 3
+            print(f'LogOUT "+" ág ellenőrzése: menuelemek száma {menusor_hossz} -> Kilépés megvalósult!')
+            find_login_btn=WebDriverWait(self.browser, 5).until(
+                EC.presence_of_element_located((By.XPATH, '//a[@href="#/login"]')))
+            assert find_login_btn
+            ### assert "Log out" felírat meglétének ellenőrzésével
+            # user_prof_btns = self.browser.find_elements(By.XPATH,
+            #                                             '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')
+            sign_in_btn_txt = navbar_items[-2].text
+            # conf_text = (log_out_btn_txt.replace(' ', '')).upper()
+            # assert conf_text == 'LOGOUT'
+            assert sign_in_btn_txt == 'Sign in'
+            print(f'LogIN "+" ág assert 2. -> igazolt belépés: "{sign_in_btn_txt}" szöveg megjelent!', '+')
+
+
+
+
+
+
 
 
 
