@@ -23,7 +23,7 @@ class TestSingUp(object):
 
     def gathering_input_fields(self, inp_fields_elements: dict, placeholders_dict: dict):
         placeholders = list(placeholders_dict.keys())
-        # placeholders = ["Username", "Email", "Password"]
+        # placeholders = ["Username", "Email", "Password"] # a kód kezdeti fázisban előre def. értékekkel ment
         # print(placeholders)
         for field in range(len(placeholders)):
             inp_fields_elements[f'{placeholders[field]}'] = self.browser.find_element(By.XPATH,
@@ -45,11 +45,11 @@ class TestSingUp(object):
         return inp_dict[sub_dict]
 
     def send_inputs(self, inpFields_dict, inp_dict_sub):
-        # print(inpFields_dict)
+        # inputmezők kitöltése és küldése fgv-ből nyert dict-ek kulcs/érték átadásával
         for pairs in inpFields_dict.items():
             inpName = pairs[0]
             inpValue = pairs[1]
-            # print(f'key&value: {inpName}={inpValue}')
+            # print(f'key&value: {inpName}={inpValue}') # ellenőrző sor
             send_this_key = inp_dict_sub[inpName]
             inpValue.send_keys(send_this_key)
 
@@ -65,13 +65,13 @@ class TestSingUp(object):
         return actual_str
 
     def expected_text(self, info: str):
-
         expected_str = {"Pass": {'Title': 'Welcome!',
                                  'Text': 'Your registration was successful!'},
                         "Fail": {'Title': 'Registration failed!',
                                  'Text': 'Password field required.'},
                         "While": {'Title': 'Registration failed!',
                                  'Text': 'Email already taken.'},
+                        "Accept": {'Text': 'I accept!'},
                         }
         return expected_str[info]
 
@@ -79,25 +79,21 @@ class TestSingUp(object):
         WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//button[@class="swal-button swal-button--confirm"]'))).click()
 
-    # def mnu_elemek_ell(goal, mnu_nr:int):
-    #     # print(f'\nFejlécmenű info: ha-> 3 elemű: Látogató (nincs belépve); ha-> 5 elemű: Felhasználó (belépett), ez most: {menusor_hossz}')
-    #     login_status = {
-    #         3: {'user': 'Látogató', 'status': 'nincs belépve'},
-    #         5: {'user': 'Felhasználó', 'status': 'belépett'},
-    #     }
-    #     print(f'\n{goal}:'
-    #           f'\nMenűelemek száma: {mnu_nr}  '
-    #           f'\n-->> user: {login_status[mnu_nr]["user"]}, '
-    #           f'\n     jogosultság: {login_status[mnu_nr]["status"]}\n')
-
 
     def check_mnuitems_length(self):
-
         user_prof_btns_aft_click = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
             (By.XPATH, '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')))
         menusor_hossz = len(user_prof_btns_aft_click)
         print(menusor_hossz)
         return menusor_hossz
+
+    def signin_rutin(self):
+        self.useSignInButton()
+        inp_dict_sub = self.inp_values(sub_dict='Pass')
+        del inp_dict_sub['Username']
+        print(inp_dict_sub)
+        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
+        self.send_inputs(inpFields_dict, inp_dict_sub)
 
     def setup_method(self):
         service = Service(executable_path=ChromeDriverManager().install())
@@ -112,23 +108,21 @@ class TestSingUp(object):
         self.browser.get(URL)
         self.browser.maximize_window()
 
-        # self.registration_button = self.useRegistrationButton()
-
     def teardown_method(self):
-        pass
-        # self.browser.quit()
+        # pass
+        self.browser.quit()
 
     @allure.id('TC1.1. N+')
     @allure.title('Regisztrációs kisérlet - jelszó nélkül')
     def test_sign_up_direct_neg(self):
         ### belépési kisérlet jelszó nélkül - direkt negatív ág
+
+        ### reg. folyamat indítása menűpont kattintásával
         self.useRegistrationButton()
 
         ### Input értékek kigyűjtése, mezők kitöltése és elküldése
         inp_dict_sub = self.inp_values(sub_dict='Fail')
-
         inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
-
         self.send_inputs(inpFields_dict, inp_dict_sub)
 
         ### Asserthez szükséges elvárt és tényleges értékek
@@ -143,11 +137,12 @@ class TestSingUp(object):
     @allure.id('TC1.2 P+')
     @allure.title('Regisztráció - fix adatokkal (samsara!)')
     def test_sign_up_fix_poz(self):
-        ### belépési kisérlet jelszó nélkül - direkt negatív ág
+        ### belépési kisérlet előre megadott (még nem foglalt) adatokkal
 
+        ### reg. folyamat indítása menűpont kattintásával
         self.useRegistrationButton()
 
-        ### Inputmezők kigyűjtése és elküldése
+        ### Inputmezők adatainak kigyűjtése és elküldése
         inp_dict_sub = self.inp_values(sub_dict='Pass')
         inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
         self.send_inputs(inpFields_dict, inp_dict_sub)
@@ -164,9 +159,12 @@ class TestSingUp(object):
     @allure.id('TC1.3 cond P+ ')
     @allure.title('Regisztráció - Míg sikeres nem lesz')
     def test_sign_up_while(self):
+        ### regisztrációs folyamat ciklussal, arra az esetre, ha a megelöző felhasználó név már foglalt lenne
 
+        ### reg. folyamat indítása menűpont kattintásával
         self.useRegistrationButton()
 
+        ### Inputmezők adatainak kigyűjtése - küldés a while cikluson belül
         inp_dict_sub = self.inp_values(sub_dict='While')
         inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
 
@@ -216,23 +214,16 @@ class TestSingUp(object):
     @allure.id('TC2. P+')
     @allure.title('Belépés sikerességének ellenőrzése')
     def test_sign_in(self):
-        self.useSignInButton()
-
-        ### Inputmezők kigyűjtése és elküldése
-        inp_dict_sub = self.inp_values(sub_dict='Pass')
-        del inp_dict_sub['Username']
-        print(inp_dict_sub)
-        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
-        self.send_inputs(inpFields_dict, inp_dict_sub)
+        ### Sikeres bejelentkezés ellenőrzése
+        # belépési rutin folyamat
+        self.signin_rutin()
 
         time.sleep(2)
         self.browser.refresh()
         menusor_hossz = self.check_mnuitems_length()
-
-
         if menusor_hossz == 5:  # sikeres belépés
-
-            assert menusor_hossz == 5  # assert menusor_hossz == 5  # Pozitív ág belépésre: belépést követően a fejlécmenű elemei 5-re változnak
+            # assert menusor_hossz == 5  # Pozitív ág belépésre: belépést követően a fejlécmenű elemei 5-re változnak
+            assert menusor_hossz == 5
             print(f'LogIN "+" ág ellenőrzése: menuelemek száma {menusor_hossz} -> Belépés megvalósult!')
 
             ### assert "Log out" gomb meglétének ellenőrzésével
@@ -251,21 +242,23 @@ class TestSingUp(object):
 
     @allure.id('TC3. P+')
     @allure.title('Cookie policy acceptance')
-    def gdpr_acceptance(self):
-        self.useSignInButton()
+    def test_gdpr_acceptance(self):
+        ### GDPR ellenőrzés
 
-        ### Inputmezők kigyűjtése és elküldése
-        inp_dict_sub = self.inp_values(sub_dict='Pass')
-        del inp_dict_sub['Username']
-        print(inp_dict_sub)
-        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
-        self.send_inputs(inpFields_dict, inp_dict_sub)
+        #belépési rutin folyamat
+        self.signin_rutin()
 
-        # time.sleep(2)
-        # self.browser.refresh()
-        # menusor_hossz = self.check_mnuitems_length()
+        ### sütihasználati politikát elfogadó gomb
+        accept_btn= WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//button[@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]/div')))
 
-        WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//button[@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]'))).click()
+        ### Öszzevetésre szánt gombfelíratok
+        accept_btn_text=accept_btn.text
+        expected_str = self.expected_text(info='Accept')
+        ## cookie policy elfogadásához tartotzó gomb szövegének ellenőrzése - 'I accept!' gomb
+        assert accept_btn_text == expected_str['Text']
+
+        accept_btn.click()
+
 
 
 
