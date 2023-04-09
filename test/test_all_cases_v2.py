@@ -20,9 +20,11 @@ class TestSingUp(object):
         WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/login"]'))).click()
 
 
-    def gathering_input_fields(self, inp_fields_elements: dict):
-
-        placeholders = ["Username", "Email", "Password"]
+    def gathering_input_fields(self, inp_fields_elements: dict, placeholders_dict: dict):
+        placeholders = list(placeholders_dict.keys())
+        # placeholders = ["Username", "Email", "Password"]
+        print(placeholders)
+        print(placeholders[0])
         for field in range(len(placeholders)):
             inp_fields_elements[f'{placeholders[field]}'] = self.browser.find_element(By.XPATH,
                                                                                       f'//input[@placeholder="{placeholders[field]}"]')
@@ -95,7 +97,35 @@ class TestSingUp(object):
         # pass
         self.browser.quit()
 
-    @allure.id('TC1.1 P+')
+    @allure.id('TC1.1. N+')
+    @allure.title('Regisztrációs kisérlet - jelszó nélkül')
+    def test_sign_up_direct_neg(self):
+        ### belépési kisérlet jelszó nélkül - direkt negatív ág
+        self.useRegistrationButton()
+
+        ### Input értékek kigyűjtése, mezők kitöltése és elküldése
+        inp_dict_sub = self.inp_values(sub_dict='Fail')
+        print(f'\na Fail értékei:')
+        for p in inp_dict_sub.values():
+            print(p)
+
+        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
+        print(f'\na Fail értékei:')
+        for p in inpFields_dict.values():
+            print(p)
+
+        self.send_inputs(inpFields_dict, inp_dict_sub)
+
+        ### Asserthez szükséges elvárt és tényleges értékek
+        actual_str = self.popup_text(actual_str={})
+        expected_str = self.expected_text(info='Fail')
+
+        ## REG. ELLENŐRZÉSE NEGATÍV ÁGON - SIKERES SIKERTELEN REG. :))
+        assert actual_str['reg_succ'] == expected_str['Title']
+        assert actual_str['reg_succ_s'] == expected_str['Text']
+        print(f"Assert a negatív ágon: {actual_str['reg_succ']} ({actual_str['reg_succ_s']})")
+
+    @allure.id('TC1.2 P+')
     @allure.title('Regisztráció - fix adatokkal (samsara!)')
     def test_sign_up_fix_poz(self):
         ### belépési kisérlet jelszó nélkül - direkt negatív ág
@@ -116,7 +146,7 @@ class TestSingUp(object):
         assert actual_str['reg_succ_s'] == expected_str['Text']
         print(f"Assert a pozitív ágon: {actual_str['reg_succ']} ({actual_str['reg_succ_s']})")
 
-    @allure.id('TC1.2 cond P+ ')
+    @allure.id('TC1.3 cond P+ ')
     @allure.title('Regisztráció - Míg sikeres nem lesz')
     def test_sign_up_while(self):
 
@@ -166,25 +196,7 @@ class TestSingUp(object):
                     print(f'\n{n - 1} negatív ágon lefuttatott Assert: {reg_succ_N} ({reg_succ_s_N}) után: ')
                     print(f"Assert a pozitív ágon: {actual_str['reg_succ']} ({actual_str['reg_succ_s']})")
 
-    @allure.id('TC1.3. N+')
-    @allure.title('Regisztrációs kisérlet - jelszó nélkül')
-    def test_sign_up_direct_neg(self):
-        ### belépési kisérlet jelszó nélkül - direkt negatív ág
-        self.useRegistrationButton()
 
-        ### Input értékek kigyűjtése, mezők kitöltése és elküldése
-        inp_dict_sub = self.inp_values(sub_dict='Fail')
-        inpFields_dict = self.gathering_input_fields(inp_fields_elements={})
-        self.send_inputs(inpFields_dict, inp_dict_sub)
-
-        ### Asserthez szükséges elvárt és tényleges értékek
-        actual_str = self.popup_text(actual_str={})
-        expected_str = self.expected_text(info='Fail')
-
-        ## REG. ELLENŐRZÉSE NEGATÍV ÁGON - SIKERES SIKERTELEN REG. :))
-        assert actual_str['reg_succ'] == expected_str['Title']
-        assert actual_str['reg_succ_s'] == expected_str['Text']
-        print(f"Assert a negatív ágon: {actual_str['reg_succ']} ({actual_str['reg_succ_s']})")
 
     @allure.id('TC2. P+')
     @allure.title('Belépés sikerességének ellenőrzése')
