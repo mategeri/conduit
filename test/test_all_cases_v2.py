@@ -57,6 +57,17 @@ class TestSingUp(object):
             EC.presence_of_element_located(
                 (By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]'))).click()
 
+    def reg_process_init(self, keyword:str):
+        ### reg. folyamat indítása menűpont kattintásával
+        self.useRegistrationButton()
+
+        ### Input értékek kigyűjtése, mezők kitöltése és elküldése
+        inp_dict_sub = self.inp_values(sub_dict=keyword)
+        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
+        self.send_inputs(inpFields_dict, inp_dict_sub)
+
+
+
     def popup_text(self, actual_str:dict):
         WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//div[@class="swal-title"]')))
@@ -84,14 +95,14 @@ class TestSingUp(object):
         user_prof_btns_aft_click = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
             (By.XPATH, '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')))
         menusor_hossz = len(user_prof_btns_aft_click)
-        print(menusor_hossz)
+        # print(menusor_hossz)
         return menusor_hossz
 
     def signin_rutin(self):
         self.useSignInButton()
         inp_dict_sub = self.inp_values(sub_dict='Pass')
         del inp_dict_sub['Username']
-        print(inp_dict_sub)
+        # print(inp_dict_sub)
         inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
         self.send_inputs(inpFields_dict, inp_dict_sub)
 
@@ -117,13 +128,7 @@ class TestSingUp(object):
     def test_sign_up_direct_neg(self):
         ### belépési kisérlet jelszó nélkül - direkt negatív ág
 
-        ### reg. folyamat indítása menűpont kattintásával
-        self.useRegistrationButton()
-
-        ### Input értékek kigyűjtése, mezők kitöltése és elküldése
-        inp_dict_sub = self.inp_values(sub_dict='Fail')
-        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
-        self.send_inputs(inpFields_dict, inp_dict_sub)
+        self.reg_process_init(keyword='Fail')
 
         ### Asserthez szükséges elvárt és tényleges értékek
         actual_str = self.popup_text(actual_str={})
@@ -139,17 +144,11 @@ class TestSingUp(object):
     def test_sign_up_fix_poz(self):
         ### belépési kisérlet előre megadott (még nem foglalt) adatokkal
 
-        ### reg. folyamat indítása menűpont kattintásával
-        self.useRegistrationButton()
-
-        ### Inputmezők adatainak kigyűjtése és elküldése
-        inp_dict_sub = self.inp_values(sub_dict='Pass')
-        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
-        self.send_inputs(inpFields_dict, inp_dict_sub)
+        self.reg_process_init(keyword='Pass')
 
         ### Asserthez szükséges elvárt és tényleges értékek
         actual_str=self.popup_text(actual_str={})
-        expected_str=self.expected_text(info='While')
+        expected_str=self.expected_text(info='Pass')
 
         ## REG. ELLENŐRZÉSE POZITÍV ÁGON - SIKERES REG.
         assert actual_str['reg_succ'] == expected_str['Title']
@@ -206,6 +205,7 @@ class TestSingUp(object):
                 assert actual_str['reg_succ'] == expected_Pstr['Title']
                 assert actual_str['reg_succ_s'] == expected_Pstr['Text']
                 if actual_str['reg_succ'] == expected_Pstr['Title']:
+                    ### Alábbi csak a konzolos 'többletinfó' kiíratáshoz szükséges
                     print(f'\n{n - 1} negatív ágon lefuttatott Assert: {reg_succ_N} ({reg_succ_s_N}) után: ')
                     print(f"Assert a pozitív ágon: {actual_str['reg_succ']} ({actual_str['reg_succ_s']})")
 
