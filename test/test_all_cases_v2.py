@@ -243,7 +243,7 @@ class TestSingUp(object):
     @allure.id('TC3. P+')
     @allure.title('Cookie policy acceptance')
     def test_gdpr_acceptance(self):
-        ### GDPR ellenőrzés
+        ### 3.	Adatkezelési nyilatkozat használata
 
         #belépési rutin folyamat
         self.signin_rutin()
