@@ -31,7 +31,7 @@ class TestSingUp(object):
     def teardown_mwthod(self):
         self.browser.quit()
 
-    @allure.id('TC1')
+    @allure.id('TC1 P+')
     @allure.title('Regisztráció - Míg sikeres nem lesz')
     def test_sign_up_negativ_and_pozitiv(self, Username_n = ['user1'], Email_n = ['user1@hotmail.com'], Password = 'Userpass1', reg_succ = ''):
 
@@ -93,7 +93,7 @@ class TestSingUp(object):
         # böngésző bezárása
         self.browser.quit()
 
-    @allure.id('TC1')
+    @allure.id('TC1 N-')
     @allure.title('Regisztrációs kisérlet - jelszó nélkül')
     def test_sign_up_direct_negativ(self, Username_nope = 'user', Email_nope = 'user@hotmail.com', Password_nope = ''):
         ### belépési kisérlet jelszó nélkül - direkt negatív ág
