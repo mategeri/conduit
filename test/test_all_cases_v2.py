@@ -1,4 +1,5 @@
 ## 1. Sign up automatizálása
+import time
 
 import allure
 from selenium import webdriver
@@ -23,8 +24,7 @@ class TestSingUp(object):
     def gathering_input_fields(self, inp_fields_elements: dict, placeholders_dict: dict):
         placeholders = list(placeholders_dict.keys())
         # placeholders = ["Username", "Email", "Password"]
-        print(placeholders)
-        print(placeholders[0])
+        # print(placeholders)
         for field in range(len(placeholders)):
             inp_fields_elements[f'{placeholders[field]}'] = self.browser.find_element(By.XPATH,
                                                                                       f'//input[@placeholder="{placeholders[field]}"]')
@@ -78,6 +78,27 @@ class TestSingUp(object):
     def popup_ok_btn(self):
         WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//button[@class="swal-button swal-button--confirm"]'))).click()
+
+    # def mnu_elemek_ell(goal, mnu_nr:int):
+    #     # print(f'\nFejlécmenű info: ha-> 3 elemű: Látogató (nincs belépve); ha-> 5 elemű: Felhasználó (belépett), ez most: {menusor_hossz}')
+    #     login_status = {
+    #         3: {'user': 'Látogató', 'status': 'nincs belépve'},
+    #         5: {'user': 'Felhasználó', 'status': 'belépett'},
+    #     }
+    #     print(f'\n{goal}:'
+    #           f'\nMenűelemek száma: {mnu_nr}  '
+    #           f'\n-->> user: {login_status[mnu_nr]["user"]}, '
+    #           f'\n     jogosultság: {login_status[mnu_nr]["status"]}\n')
+
+
+    def check_mnuitems_length(self):
+
+        user_prof_btns_aft_click = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
+            (By.XPATH, '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')))
+        menusor_hossz = len(user_prof_btns_aft_click)
+        print(menusor_hossz)
+        return menusor_hossz
+
     def setup_method(self):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
@@ -94,8 +115,8 @@ class TestSingUp(object):
         # self.registration_button = self.useRegistrationButton()
 
     def teardown_method(self):
-        # pass
-        self.browser.quit()
+        pass
+        # self.browser.quit()
 
     @allure.id('TC1.1. N+')
     @allure.title('Regisztrációs kisérlet - jelszó nélkül')
@@ -105,14 +126,8 @@ class TestSingUp(object):
 
         ### Input értékek kigyűjtése, mezők kitöltése és elküldése
         inp_dict_sub = self.inp_values(sub_dict='Fail')
-        print(f'\na Fail értékei:')
-        for p in inp_dict_sub.values():
-            print(p)
 
         inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
-        print(f'\na Fail értékei:')
-        for p in inpFields_dict.values():
-            print(p)
 
         self.send_inputs(inpFields_dict, inp_dict_sub)
 
@@ -134,7 +149,7 @@ class TestSingUp(object):
 
         ### Inputmezők kigyűjtése és elküldése
         inp_dict_sub = self.inp_values(sub_dict='Pass')
-        inpFields_dict=self.gathering_input_fields(inp_fields_elements={})
+        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
         self.send_inputs(inpFields_dict, inp_dict_sub)
 
         ### Asserthez szükséges elvárt és tényleges értékek
@@ -153,7 +168,7 @@ class TestSingUp(object):
         self.useRegistrationButton()
 
         inp_dict_sub = self.inp_values(sub_dict='While')
-        inpFields_dict = self.gathering_input_fields(inp_fields_elements={})
+        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
 
         ### Asserthez szükséges elvárt és tényleges értékek
         expected_Pstr = self.expected_text(info='Pass')
@@ -202,5 +217,61 @@ class TestSingUp(object):
     @allure.title('Belépés sikerességének ellenőrzése')
     def test_sign_in(self):
         self.useSignInButton()
+
+        ### Inputmezők kigyűjtése és elküldése
+        inp_dict_sub = self.inp_values(sub_dict='Pass')
+        del inp_dict_sub['Username']
+        print(inp_dict_sub)
+        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
+        self.send_inputs(inpFields_dict, inp_dict_sub)
+
+        time.sleep(2)
+        self.browser.refresh()
+        menusor_hossz = self.check_mnuitems_length()
+
+
+        if menusor_hossz == 5:  # sikeres belépés
+
+            assert menusor_hossz == 5  # assert menusor_hossz == 5  # Pozitív ág belépésre: belépést követően a fejlécmenű elemei 5-re változnak
+            print(f'LogIN "+" ág ellenőrzése: menuelemek száma {menusor_hossz} -> Belépés megvalósult!')
+
+            ### assert "Log out" gomb meglétének ellenőrzésével
+            find_log_out_btn = WebDriverWait(self.browser, 5).until(
+                EC.presence_of_element_located((By.XPATH, '//i[@class="ion-android-exit"]')))
+            assert find_log_out_btn
+            print(f'LogIN "+" ág assert 1.-> igazolt belépés: A kilépés gomb lokalizálható!', '+')
+
+            ### assert "Log out" felírat meglétének ellenőrzésével
+            user_prof_btns = self.browser.find_elements(By.XPATH,
+                                                        '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')
+            log_out_btn_txt = user_prof_btns[-1].text
+            conf_text = (log_out_btn_txt.replace(' ', '')).upper()
+            assert conf_text == 'LOGOUT'
+            print(f'LogIN "+" ág assert 2. -> igazolt belépés: {log_out_btn_txt} szöveg megjelent!', '+')
+
+    @allure.id('TC3. P+')
+    @allure.title('Cookie policy acceptance')
+    def gdpr_acceptance(self):
+        self.useSignInButton()
+
+        ### Inputmezők kigyűjtése és elküldése
+        inp_dict_sub = self.inp_values(sub_dict='Pass')
+        del inp_dict_sub['Username']
+        print(inp_dict_sub)
+        inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
+        self.send_inputs(inpFields_dict, inp_dict_sub)
+
+        # time.sleep(2)
+        # self.browser.refresh()
+        # menusor_hossz = self.check_mnuitems_length()
+
+        WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//button[@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]'))).click()
+
+
+
+
+
+
+
 
 
