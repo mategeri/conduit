@@ -61,29 +61,29 @@ class TestConduit:
 
         print("TC1 - Az adatkezelési nyilatkozat használata teszteset sikeresen lefutott!")
     #
-    # # TC2 - Regisztráció
-    #
-    # def test_registration(self):
-    #     signup_button = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
-    #     signup_button.click()
-    #
-    #     username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
-    #     email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-    #     password_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
-    #     signup_button = self.browser.find_element(By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
-    #
-    #     username_input.send_keys(self.username)
-    #     email_input.send_keys(self.email)
-    #     password_input.send_keys(self.password)
-    #     signup_button.click()
-    #     time.sleep(2)
-    #     assert self.browser.find_element(By.XPATH, '//button[@class="swal-button swal-button--confirm"]').is_displayed()
-    #     reg_ok_button = self.browser.find_element(By.XPATH, '//button[text()="OK"]')
-    #     time.sleep(2)
-    #     reg_ok_button.click()
-    #
-    #     print("TC2 - A regisztráció teszteset sikeresen lefutott!")
-    #
+    # TC2 - Regisztráció
+
+    def test_registration(self):
+        signup_button = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
+        signup_button.click()
+
+        username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
+        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+        password_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Password"]')
+        signup_button = self.browser.find_element(By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
+
+        username_input.send_keys(self.username)
+        email_input.send_keys(self.email)
+        password_input.send_keys(self.password)
+        signup_button.click()
+        time.sleep(2)
+        assert self.browser.find_element(By.XPATH, '//button[@class="swal-button swal-button--confirm"]').is_displayed()
+        reg_ok_button = self.browser.find_element(By.XPATH, '//button[text()="OK"]')
+        time.sleep(2)
+        reg_ok_button.click()
+
+        print("TC2 - A regisztráció teszteset sikeresen lefutott!")
+
     # # TC3 - Bejelentkezés
     #
     # def test_login(self):
