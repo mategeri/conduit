@@ -19,16 +19,14 @@ class Test11ConduitFunction(object):
         WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/login"]'))).click()
 
     def log_in_btn(self):
-        login_btn=WebDriverWait(self.browser, 5).until(
+        login_btn = WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//a[@href="#/login"]')))
         return login_btn
 
     def log_out_btn(self):
-        logou_btn=WebDriverWait(self.browser, 5).until(
+        logou_btn = WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//i[@class="ion-android-exit"]')))
         return logou_btn
-
-
 
     def gathering_input_fields(self, inp_fields_elements: dict, placeholders_dict: dict):
         placeholders = list(placeholders_dict.keys())
@@ -65,7 +63,7 @@ class Test11ConduitFunction(object):
             EC.presence_of_element_located(
                 (By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]'))).click()
 
-    def reg_process_init(self, keyword:str):
+    def reg_process_init(self, keyword: str):
         ### reg. folyamat indítása menűpont kattintásával
         self.useRegistrationButton()
 
@@ -74,9 +72,7 @@ class Test11ConduitFunction(object):
         inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
         self.send_inputs(inpFields_dict, inp_dict_sub)
 
-
-
-    def popup_text(self, actual_str:dict):
+    def popup_text(self, actual_str: dict):
         WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//div[@class="swal-title"]')))
         actual_str['reg_succ'] = self.browser.find_element(By.XPATH, '//div[@class="swal-title"]').text
@@ -89,28 +85,20 @@ class Test11ConduitFunction(object):
                         "Fail": {'Title': 'Registration failed!',
                                  'Text': 'Password field required.'},
                         "While": {'Title': 'Registration failed!',
-                                 'Text': 'Email already taken.'},
+                                  'Text': 'Email already taken.'},
                         "Accept": {'Text': 'I accept!'},
                         }
         return expected_str[info]
 
-    def popup_ok_btn(self):
+    def click_popup_ok_btn(self):
         WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//button[@class="swal-button swal-button--confirm"]'))).click()
 
-
-    # def check_mnuitems_length(self):
-    #     nav_mnu_items = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
-    #         (By.XPATH, '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')))
-    #     menusor_hossz = len(nav_mnu_items)
-    #     # print(menusor_hossz)
-    #     return menusor_hossz
 
     def locate_navbar_items(self):
         navbar_items = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
             (By.XPATH, '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')))
         return navbar_items
-
 
     def signin_rutin(self):
         self.useSignInButton()
@@ -127,7 +115,8 @@ class Test11ConduitFunction(object):
         return accept_btn
 
     def def_tag_list(self):
-        predef_tags=('lorem', 'ipsum', 'dolor', 'nisil', 'urna', 'nunc', 'laoreet', 'dorum', 'loret', 'nibih', 'mitast', 'leo' )
+        predef_tags = (
+        'lorem', 'ipsum', 'dolor', 'nisil', 'urna', 'nunc', 'laoreet', 'dorum', 'loret', 'nibih', 'mitast', 'leo')
         return predef_tags
 
     def tag_list(self):
@@ -141,22 +130,75 @@ class Test11ConduitFunction(object):
         actual_tags = self.tag_list()
         listahossz = len(predef_tags)
         assert len(actual_tags) >= listahossz
-        ottvan=0
+        ottvan = 0
         for t in range(len(actual_tags)):
-            Nope=True
-            tag_name=actual_tags[t].text
+            Nope = True
+            tag_name = actual_tags[t].text
             for v in range(listahossz):
                 if tag_name == predef_tags[v]:
                     assert tag_name == predef_tags[v]
                     ### Ha egy elemet megtalált, akkor nőveljük az értéket
-                    ottvan +=1
-                    Nope=False
+                    ottvan += 1
+                    Nope = False
                     # print(tag_name + " " + str(v) + ". indexel szerpel a Tagek között")
             if Nope:
                 pass
                 # print(tag_name + " nem szerepel a Tagek között")
         return ottvan, listahossz
 
+    def listed_pages_nav_item(self):
+        page_list = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
+            (By.XPATH, '//ul[@class="pagination"]//a[@class="page-link"]')))
+        nr_of_pages = len(page_list)
+        ### végigjárjuk a több oldalas listát, minden lépésnél lekérve az aktuális oldal számát
+        for page in range(nr_of_pages):
+            page_list[page].click()
+            srn_of_a_page = self.active_page_in_list()
+            print(f'{srn_of_a_page} / {nr_of_pages}')
+            ### ha végigértünk visszaküldjük az odlaszámokat assertálásra
+            if srn_of_a_page == nr_of_pages:
+                page_nrs = {'all': nr_of_pages, 'actual': srn_of_a_page}
+                return page_nrs
+
+    def active_page_in_list(self):
+        active_page = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located(
+            (By.XPATH, '//ul[@class="pagination"]//li[@class="page-item active"]//a[@class="page-link"]')))
+        srn_of_a_p = int(active_page.text)
+        return srn_of_a_p
+
+    def create_new_article(self):
+        WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]'))).click()
+
+        new_article = self.new_article_dict()
+
+        inp_values = list(new_article.values())
+        placeholders = list(new_article.keys())
+        text_area = placeholders[2]
+        GivenATitle=new_article['Article Title']
+
+        for field in range(len(placeholders)):
+            if placeholders[field] == text_area:
+                inp_field = WebDriverWait(self.browser, 10).until(
+                    EC.presence_of_element_located((By.XPATH, f'//textarea[@placeholder="{placeholders[field]}"]')))
+            else:
+                inp_field = WebDriverWait(self.browser, 10).until(
+                    EC.presence_of_element_located((By.XPATH, f'//input[@placeholder="{placeholders[field]}"]')))
+            inp_field.send_keys(inp_values[field])
+
+        WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.XPATH, '//button[@type="submit"]'))).click()
+        return GivenATitle
+
+
+    def new_article_dict (self):
+        ### key=input placeholder; value=új cikk szövegelemei
+        new_article = {"Article Title": "Create Eco-style text",
+                        "What's this article about?": "How to generate text in Umberto Eco's style ",
+                        "Write your article (in markdown)": "Now that the text-writing generated by AI is strengthened, it would be interesting to try to write a book in Umberto Eco's style,  with the help of an chat-AI",
+                        "Enter tags": "Umberto, Eco, chat-AI",
+                        }
+        return new_article
 
 
 
@@ -164,9 +206,9 @@ class Test11ConduitFunction(object):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
         options.add_experimental_option("detach", True)
-        # options.add_argument('--headless')
-        # options.add_argument('--no-sandbox')
-        # options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
         options.add_argument('window-position=-1000,0')
         self.browser = webdriver.Chrome(service=service, options=options)
         URL = "http://localhost:1667/"
@@ -174,10 +216,10 @@ class Test11ConduitFunction(object):
         self.browser.maximize_window()
 
     def teardown_method(self):
-        pass
-        # self.browser.quit()
+        # pass
+        self.browser.quit()
 
-# TC1: Regisztráció----------------------------------------------------------------------------------------------------------------------
+    # TC1: Regisztráció----------------------------------------------------------------------------------------------------------------------
     @allure.id('TC1.1. N+')
     @allure.title('Sikertelen regisztrációs kisérlet - jelszó nélkül')
     def test_sign_up_direct_neg(self):
@@ -198,14 +240,15 @@ class Test11ConduitFunction(object):
         self.reg_process_init(keyword='Pass')
 
         ### Asserthez szükséges elvárt és tényleges értékek
-        actual_str=self.popup_text(actual_str={})
-        expected_str=self.expected_text(info='Pass')
+        actual_str = self.popup_text(actual_str={})
+        expected_str = self.expected_text(info='Pass')
 
         ## REG. ELLENŐRZÉSE POZITÍV ÁGON - SIKERES REG.
         assert actual_str['reg_succ'] == expected_str['Title']
         assert actual_str['reg_succ_s'] == expected_str['Text']
         print(f"Assert a pozitív ágon: {actual_str['reg_succ']} ({actual_str['reg_succ_s']})")
 
+    # TC1: Regisztáció -----------------------------------------------------------------------------------------------------------------------
     @allure.id('TC1.3 cond P+ ')
     @allure.title('Regisztráció - Míg sikeres nem lesz (ha a próbált felhasználónév már foglalt lenne)')
     def test_sign_up_while(self):
@@ -218,7 +261,7 @@ class Test11ConduitFunction(object):
 
         ### Asserthez szükséges elvárt és tényleges értékek
         expected_Pstr = self.expected_text(info='Pass')
-        popup_title=''
+        popup_title = ''
 
         n = 1
         while popup_title != expected_Pstr['Title']:
@@ -226,8 +269,8 @@ class Test11ConduitFunction(object):
             self.send_inputs(inpFields_dict, inp_dict_sub)
 
             actual_str = self.popup_text(actual_str={})
-            expected_Fstr = self.expected_text(info='Pass')
-            popup_title=actual_str['reg_succ']
+            expected_Fstr = self.expected_text(info='While')
+            popup_title = actual_str['reg_succ']
 
             if actual_str['reg_succ'] == expected_Fstr['Title']:
                 ### REG. ELLENŐRZÉSE INDIREKT NEGATÍV ÁGON - SIKERTELEN REG.
@@ -240,9 +283,9 @@ class Test11ConduitFunction(object):
                 ### Új belépési adatokat generálása n érték növelésével mivel az adott 'user#n' név már foglalt volt
                 n += 1
                 inp_dict_sub.update({'Username': f'user{n}',
-                              'Email': f'user{n}@hotmail.com',})
+                                     'Email': f'user{n}@hotmail.com', })
 
-                self.popup_ok_btn()
+                self.click_popup_ok_btn()
 
             else:
                 if n == 1:
@@ -258,7 +301,7 @@ class Test11ConduitFunction(object):
                     print(f'\n{n - 1} negatív ágon lefuttatott Assert: {reg_succ_N} ({reg_succ_s_N}) után: ')
                     print(f"Assert a pozitív ágon: {actual_str['reg_succ']} ({actual_str['reg_succ_s']})")
 
-# TC2: Bejelentkezés --------------------------------------------------------------------------------------------------------------------
+    # TC2: Bejelentkezés --------------------------------------------------------------------------------------------------------------------
     @allure.id('TC2. P+')
     @allure.title('Belépés sikerességének ellenőrzése navbar menu elemszámával, a "Log out" gomb meglétével')
     def test_sign_in(self):
@@ -267,7 +310,7 @@ class Test11ConduitFunction(object):
 
         time.sleep(2)
         self.browser.refresh()
-        navbar_items=self.locate_navbar_items()
+        navbar_items = self.locate_navbar_items()
         menusor_hossz = len(navbar_items)
         if menusor_hossz == 5:  # sikeres belépés
             ### Pozitív ág belépésre: belépést követően a fejlécmenű elemei 5-re változnak
@@ -284,63 +327,74 @@ class Test11ConduitFunction(object):
             assert log_out_btn_txt == ' Log out'
             print(f'Igazolt belépés: "{log_out_btn_txt}" szöveg megjelent!')
 
-# TC3: Adatkezelési nyilatkozat használata ----------------------------------------------------------------------------------------------
+    # TC3: Adatkezelési nyilatkozat használata ----------------------------------------------------------------------------------------------
     @allure.id('TC3. P+')
     @allure.title('Cookie policy - "I accept!" gombfelírat ellenőrzése')
     def test_gdpr_acceptance(self):
-        #belépési rutin folyamat
+        # belépési rutin folyamat
         self.signin_rutin()
 
         ### sütihasználati politikát elfogadó gomb
-        accept_btn=self.accept_cookies()
+        accept_btn = self.accept_cookies()
 
         ### Öszzevetésre szánt gombfelíratok lekérése
-        accept_btn_text=accept_btn.text
+        accept_btn_text = accept_btn.text
         expected_str = self.expected_text(info='Accept')
         ## cookie policy elfogadásához tartotzó gomb szövegének ellenőrzése - 'I accept!' gomb
         assert accept_btn_text == expected_str['Text']
 
         accept_btn.click()
 
-# TC4:	Adatok listázása-----------------------------------------------------------------------------------------------------------------
-    @allure.id('TC4. N+')
+    # TC4:	Adatok listázása-----------------------------------------------------------------------------------------------------------------
+    @allure.id('TC4. P+')
     @allure.title('Adatok listázásának ellenőrzése')
     def test_listed_data(self):
-        #belépési rutin folyamat
+        # belépési rutin folyamat
         self.signin_rutin()
-        # sütihasználati politika elfogadása
-        accept_btn = self.accept_cookies()
-        accept_btn.click()
 
         # Tag list elemeinek ellenőrzése kiszervezett fgv-el
-        ott_van=self.assert_tag_list()
+        ott_van = self.assert_tag_list()
+
         # Az ellenőrzés lényege, hogy az összes előre definiált Tag elemet megtalálta-e
-        assert ott_van[0]==ott_van[1]
+        assert ott_van[0] == ott_van[1]
+
+    # TC5: Több oldalas lista bejárása-------------------------------------------------------------------------------------------------------
+    @allure.id('TC5. N+')
+    @allure.title('Több oldalas lista bejárása')
+    def test_going_trough_multi_page_list(self):
+        # belépési rutin folyamat
+        self.signin_rutin()
+
+        ### alábbi fgv-ben végigjárjuk a több oldalas listát, minden lépésnél lekérve az aktuális oldal számát
+        nrs_of_listed_pages = self.listed_pages_nav_item()
+
+        assert nrs_of_listed_pages['all'] == nrs_of_listed_pages['actual']
+
+
+    # TC6: Új adat bevitel-------------------------------------------------------------------------------------------------------------------
+    @allure.id('TC6. P+')
+    @allure.title('Új adat bevitel')
+    def test_put_new_article(self):
+        # belépési rutin folyamat
+        self.signin_rutin()
+        ### alábbi fgv-el egy előre definiált dictionary adatait az editor inputmezőibe illesztve létrhoz egy új cikket
+        GiveNewATitle=self.create_new_article()
+
+        DispATitle=WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//div[@class="container"]//h1')))
+        ### Ellenőrizzük a megjelenő cikk címezejét, hogy egyezik-e a beküldött címadattal
+        assert DispATitle.text == GiveNewATitle
 
 
 
+    # TC7: Ismételt és sorozatos adatbevitel adatforrásból-----------------------------------------------------------------------------------
 
+    # TC8: Meglévő adat módosítás------------------------------------------------------------------------------------------------------------
 
+    # TC9: Adat vagy adatok törlése----------------------------------------------------------------------------------------------------------
 
-# TC5: Több oldalas lista bejárása-------------------------------------------------------------------------------------------------------
+    # TC10:	Adatok lementése felületről------------------------------------------------------------------------------------------------------
 
-
-# TC6: Új adat bevitel-------------------------------------------------------------------------------------------------------------------
-
-
-# TC7: Ismételt és sorozatos adatbevitel adatforrásból-----------------------------------------------------------------------------------
-
-
-# TC8: Meglévő adat módosítás------------------------------------------------------------------------------------------------------------
-
-
-# TC9: Adat vagy adatok törlése----------------------------------------------------------------------------------------------------------
-
-
-# TC10:	Adatok lementése felületről------------------------------------------------------------------------------------------------------
-
-
-# TC11:	Kijelentkezés--------------------------------------------------------------------------------------------------------------------
+    # TC11:	Kijelentkezés--------------------------------------------------------------------------------------------------------------------
     @allure.id('TC11. P+')
     @allure.title('Kilépés sikerességének ellenőrzése')
     def test_sign_out(self):
@@ -355,7 +409,7 @@ class Test11ConduitFunction(object):
         if menusor_hossz == 5:  # sikeres belépés
             assert menusor_hossz == 5
             print(f'\nMenuelemek száma: {menusor_hossz} -> Belépés megvalósult!')
-            logout_btn=self.log_out_btn()
+            logout_btn = self.log_out_btn()
             logout_btn.click()
 
         # self.browser.refresh()
@@ -364,25 +418,9 @@ class Test11ConduitFunction(object):
         if menusor_hossz == 3:  # sikeres kilépés
             assert menusor_hossz == 3
             print(f'Menuelemek száma: {menusor_hossz} -> Kilépés megvalósult!')
-            login_btn=self.log_in_btn()
+            login_btn = self.log_in_btn()
             assert login_btn
             ### assert "Log out" felírat meglétének ellenőrzésével
             sign_in_btn_txt = navbar_items[-2].text
             assert sign_in_btn_txt == 'Sign in'
             print(f'Igazolt kilépés: "{sign_in_btn_txt}" gombfelírat megjelent!')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
