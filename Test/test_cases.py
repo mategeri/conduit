@@ -271,7 +271,7 @@ class TestConduit:
         trash_icon.click()
 
         assert comment_element is not None
-
+        time.sleep(2)
         print("TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!")
 #
 # # TC10 Adatok lementése a felületről
