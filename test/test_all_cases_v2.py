@@ -19,12 +19,14 @@ class Test11ConduitFunction(object):
         WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/login"]'))).click()
 
     def log_in_btn(self):
-        WebDriverWait(self.browser, 5).until(
+        login_btn=WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//a[@href="#/login"]')))
+        return login_btn
 
     def log_out_btn(self):
-        WebDriverWait(self.browser, 5).until(
+        logou_btn=WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//i[@class="ion-android-exit"]')))
+        return logou_btn
 
 
 
@@ -243,20 +245,17 @@ class Test11ConduitFunction(object):
         if menusor_hossz == 5:  # sikeres belépés
             # Pozitív ág belépésre: belépést követően a fejlécmenű elemei 5-re változnak
             assert menusor_hossz == 5
-            print(f'\nLogIN "+" ág ellenőrzése: menuelemek száma {menusor_hossz} -> Belépés megvalósult!')
+            print(f'\nMenuelemek száma {menusor_hossz} -> Belépés megvalósult!')
 
             ### assert "Log out" gomb meglétének ellenőrzésével
-            find_log_out_btn = WebDriverWait(self.browser, 5).until(
-                EC.presence_of_element_located((By.XPATH, '//i[@class="ion-android-exit"]')))
-            assert find_log_out_btn
-            print(f'LogIN "+" ág assert 1.-> igazolt belépés: A kilépés gomb lokalizálható!', '+')
+            logout_btn = self.log_out_btn()
+            assert logout_btn
+            print(f'Igazolt belépés: A kilépés gomb lokalizálható!')
 
             ### assert "Log out" felírat meglétének ellenőrzésével
             log_out_btn_txt = navbar_items[-1].text
-            # conf_text = (log_out_btn_txt.replace(' ', '')).upper()
-            # assert conf_text == 'LOGOUT'
             assert log_out_btn_txt == ' Log out'
-            print(f'LogIN "+" ág assert 2. -> igazolt belépés: "{log_out_btn_txt}" szöveg megjelent!', '+')
+            print(f'Igazolt belépés: "{log_out_btn_txt}" szöveg megjelent!')
 
 # TC3: Adatkezelési nyilatkozat használata ----------------------------------------------------------------------------------------------
     @allure.id('TC3. P+')
@@ -286,7 +285,15 @@ class Test11ConduitFunction(object):
         accept_btn = self.accept_cookies()
         accept_btn.click()
         predef_tags=self.tag_list()
-        actual_tag=WebDriverWait(self.browser, 5).until
+        print(predef_tags)
+        actual_tag=WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a[@class="tag-pill tag-default"]')))
+        assert len(actual_tag) > 1
+        for t in actual_tag:
+            if actual_tag[t] in predef_tags:
+                print(f'{actual_tag[t]} szerepel a Tagek között')
+            else:
+                print(f'{actual_tag[t]} szerepel a Tagek között')
+
 
 
 
@@ -312,7 +319,6 @@ class Test11ConduitFunction(object):
     @allure.id('TC11. P+')
     @allure.title('Kilépés sikerességének ellenőrzése')
     def test_sign_out(self):
-        ### Sikeres Kijelentkezés ellenőrzése
         # belépési rutin folyamat
         self.signin_rutin()
 
@@ -324,25 +330,21 @@ class Test11ConduitFunction(object):
         if menusor_hossz == 5:  # sikeres belépés
             assert menusor_hossz == 5
             print(f'\nMenuelemek száma: {menusor_hossz} -> Belépés megvalósult!')
-            find_log_ou_btn=self.log_out_btn()
-            find_log_ou_btn.click()
+            logout_btn=self.log_out_btn()
+            logout_btn.click()
 
         # self.browser.refresh()
         navbar_items = self.locate_navbar_items()
         menusor_hossz = len(navbar_items)
-        if menusor_hossz == 3:  # sikeres belépés
+        if menusor_hossz == 3:  # sikeres kilépés
             assert menusor_hossz == 3
-            print(f'LogOUT "+" ág ellenőrzése: menuelemek száma {menusor_hossz} -> Kilépés megvalósult!')
-            find_login_btn=self.log_in_btn()
-            assert find_login_btn
+            print(f'Menuelemek száma: {menusor_hossz} -> Kilépés megvalósult!')
+            login_btn=self.log_in_btn()
+            assert login_btn
             ### assert "Log out" felírat meglétének ellenőrzésével
-            # user_prof_btns = self.browser.find_elements(By.XPATH,
-            #                                             '//ul[@class="nav navbar-nav pull-xs-right"]//li[@class="nav-item"]')
             sign_in_btn_txt = navbar_items[-2].text
-            # conf_text = (log_out_btn_txt.replace(' ', '')).upper()
-            # assert conf_text == 'LOGOUT'
             assert sign_in_btn_txt == 'Sign in'
-            print(f'LogIN "+" ág assert 2. -> igazolt belépés: "{sign_in_btn_txt}" szöveg megjelent!', '+')
+            print(f'Igazolt kilépés: "{sign_in_btn_txt}" gombfelírat megjelent!')
 
 
 
