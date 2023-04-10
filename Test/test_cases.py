@@ -232,47 +232,47 @@ class TestConduit:
         print("TC8 - A meglévő adat módosítás teszteset sikeresen lefutott!")
 #
 #     # TC9 Adat vagy adatok törlése.
-#
-    # def test_delete_data(self):
-    #     self.login()
-    #
-    #     time.sleep(2)
-    #
-    #     new_article_link = self.browser.find_element(By.XPATH, '//a[contains(text(), "New Article")]')
-    #     new_article_link.click()
-    #     time.sleep(1)
-    #
-    #     title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
-    #     title_input.send_keys("Rövid életű title")
-    #
-    #     description_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
-    #     description_input.send_keys("Rövid életű description")
-    #
-    #     body_input = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Write your article (in markdown)"]')
-    #     body_input.send_keys("Rövid életű body")
-    #
-    #     tags_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Enter tags"]')
-    #     tags_input.send_keys("Rövid életű tags")
-    #
-    #     publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Publish Article")]')
-    #     publish_button.click()
-    #     time.sleep(1)
-    #
-    #     comment_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Post Comment")]')
-    #     comment_textarea = self.browser.find_element(By.XPATH, "//textarea[@placeholder='Write a comment...']")
-    #     comment_textarea.send_keys("Rövid életű komment")
-    #     comment_button.click()
-    #     time.sleep(2)
-    #     comment_element = self.browser.find_element(By.XPATH, '//p[@class="card-text"]')
-    #     assert comment_element.text == "Rövid életű komment"
-    #
-    #     time.sleep(1)
-    #
-    #     trash_icon = self.browser.find_element(By.XPATH, '//i[@class="ion-trash-a"]')
-    #     trash_icon.click()
-    #
-    #     assert comment_element is not None
-    #     print("TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!")
+
+    def test_delete_data(self):
+        self.login()
+
+        time.sleep(2)
+
+        new_article_link = self.browser.find_element(By.XPATH, '//a[contains(text(), "New Article")]')
+        new_article_link.click()
+        time.sleep(1)
+
+        title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
+        title_input.send_keys("Rövid életű title")
+
+        description_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
+        description_input.send_keys("Rövid életű description")
+
+        body_input = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Write your article (in markdown)"]')
+        body_input.send_keys("Rövid életű body")
+
+        tags_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Enter tags"]')
+        tags_input.send_keys("Rövid életű tags")
+
+        publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Publish Article")]')
+        publish_button.click()
+        time.sleep(1)
+
+        comment_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Post Comment")]')
+        comment_textarea = self.browser.find_element(By.XPATH, "//textarea[@placeholder='Write a comment...']")
+        comment_textarea.send_keys("Rövid életű komment")
+        comment_button.click()
+        time.sleep(2)
+        comment_element = self.browser.find_element(By.XPATH, '//p[@class="card-text"]')
+        assert comment_element.text == "Rövid életű komment"
+
+        time.sleep(1)
+
+        trash_icon = self.browser.find_element(By.XPATH, '//i[@class="ion-trash-a"]')
+        trash_icon.click()
+
+        assert comment_element is not None
+        print("TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!")
 #
 # # TC10 Adatok lementése a felületről
 
