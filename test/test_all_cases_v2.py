@@ -126,9 +126,36 @@ class Test11ConduitFunction(object):
             (By.XPATH, '//button[@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]/div')))
         return accept_btn
 
-    def tag_list(self):
+    def def_tag_list(self):
         predef_tags=('lorem', 'ipsum', 'dolor', 'nisil', 'urna', 'nunc', 'laoreet', 'dorum', 'loret', 'nibih', 'mitast', 'leo' )
         return predef_tags
+
+    def tag_list(self):
+        actual_tag = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
+            (By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a[@class="tag-pill tag-default"]')))
+        return actual_tag
+
+    def assert_tag_list(self):
+        # Tag lista elemeinek ellenőrzése: honlapon talált Tagek összevetése előre def. Tagekkel
+        predef_tags = self.def_tag_list()
+        actual_tags = self.tag_list()
+        listahossz = len(predef_tags)
+        assert len(actual_tags) >= listahossz
+        ottvan=0
+        for t in range(len(actual_tags)):
+            Nope=True
+            tag_name=actual_tags[t].text
+            for v in range(listahossz):
+                if tag_name == predef_tags[v]:
+                    assert tag_name == predef_tags[v]
+                    ### Ha egy elemet megtalált, akkor nőveljük az értéket
+                    ottvan +=1
+                    Nope=False
+                    # print(tag_name + " " + str(v) + ". indexel szerpel a Tagek között")
+            if Nope:
+                pass
+                # print(tag_name + " nem szerepel a Tagek között")
+        return ottvan, listahossz
 
 
 
@@ -243,7 +270,7 @@ class Test11ConduitFunction(object):
         navbar_items=self.locate_navbar_items()
         menusor_hossz = len(navbar_items)
         if menusor_hossz == 5:  # sikeres belépés
-            # Pozitív ág belépésre: belépést követően a fejlécmenű elemei 5-re változnak
+            ### Pozitív ág belépésre: belépést követően a fejlécmenű elemei 5-re változnak
             assert menusor_hossz == 5
             print(f'\nMenuelemek száma {menusor_hossz} -> Belépés megvalósult!')
 
@@ -278,21 +305,19 @@ class Test11ConduitFunction(object):
 # TC4:	Adatok listázása-----------------------------------------------------------------------------------------------------------------
     @allure.id('TC4. N+')
     @allure.title('Adatok listázásának ellenőrzése')
-    def check_listed_data(self):
+    def test_listed_data(self):
         #belépési rutin folyamat
         self.signin_rutin()
         # sütihasználati politika elfogadása
         accept_btn = self.accept_cookies()
         accept_btn.click()
-        predef_tags=self.tag_list()
-        print(predef_tags)
-        actual_tag=WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a[@class="tag-pill tag-default"]')))
-        assert len(actual_tag) > 1
-        for t in actual_tag:
-            if actual_tag[t] in predef_tags:
-                print(f'{actual_tag[t]} szerepel a Tagek között')
-            else:
-                print(f'{actual_tag[t]} szerepel a Tagek között')
+
+        # Tag list elemeinek ellenőrzése kiszervezett fgv-el
+        ott_van=self.assert_tag_list()
+        # Az ellenőrzés lényege, hogy az összes előre definiált Tag elemet megtalálta-e
+        assert ott_van[0]==ott_van[1]
+
+
 
 
 
