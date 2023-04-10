@@ -84,16 +84,16 @@ class TestConduit:
 
         print("TC2 - A regisztráció teszteset sikeresen lefutott!")
 
-    # # TC3 - Bejelentkezés
-    #
-    # def test_login(self):
-    #     self.login()
-    #
-    #     nav_links = WebDriverWait(self.browser, 5).until(
-    #         EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[class="nav-link"]')))
-    #     profile = nav_links[2]
-    #     assert profile.text == self.username
-    #     print("TC3 - A bejelentkezés teszteset sikeresen lefutott!")
+    # TC3 - Bejelentkezés
+
+    def test_login(self):
+        self.login()
+
+        nav_links = WebDriverWait(self.browser, 5).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a[class="nav-link"]')))
+        profile = nav_links[2]
+        assert profile.text == self.username
+        print("TC3 - A bejelentkezés teszteset sikeresen lefutott!")
 #
     # TC4 - Adatok listázása
     # def test_data_list(self):
