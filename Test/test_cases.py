@@ -143,7 +143,7 @@ class TestConduit:
         time.sleep(2)
         new_article_button = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
         new_article_button.click()
-
+        time.sleep(1)
         title_input = WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="Article Title"]')))
         title_input.send_keys("Új adat bevitel teszt title")
