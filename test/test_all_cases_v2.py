@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-class TestSingUp(object):
+class Test11ConduitFunction(object):
 
     def useRegistrationButton(self):
         WebDriverWait(self.browser, 5).until(
@@ -109,6 +109,12 @@ class TestSingUp(object):
         inpFields_dict = self.gathering_input_fields(inp_fields_elements={}, placeholders_dict=inp_dict_sub)
         self.send_inputs(inpFields_dict, inp_dict_sub)
 
+    def accept_cookies(self):
+        ### sütihasználati politikát elfogadó gomb
+        accept_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located(
+            (By.XPATH, '//button[@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]/div')))
+        return accept_btn
+
     def setup_method(self):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
@@ -128,10 +134,8 @@ class TestSingUp(object):
 
 # TC1: Regisztráció----------------------------------------------------------------------------------------------------------------------
     @allure.id('TC1.1. N+')
-    @allure.title('Regisztrációs kisérlet - jelszó nélkül')
+    @allure.title('Sikertelen regisztrációs kisérlet - jelszó nélkül')
     def test_sign_up_direct_neg(self):
-        ### belépési kisérlet jelszó nélkül - direkt negatív ág
-
         self.reg_process_init(keyword='Fail')
 
         ### Asserthez szükséges elvárt és tényleges értékek
@@ -144,10 +148,8 @@ class TestSingUp(object):
         print(f"Assert a negatív ágon: {actual_str['reg_succ']} ({actual_str['reg_succ_s']})")
 
     @allure.id('TC1.2 P+')
-    @allure.title('Regisztráció - fix adatokkal (samsara!)')
+    @allure.title('Regisztráció - fix (még nem regisztrált) adatokkal')
     def test_sign_up_fix_poz(self):
-        ### belépési kisérlet előre megadott (még nem foglalt) adatokkal
-
         self.reg_process_init(keyword='Pass')
 
         ### Asserthez szükséges elvárt és tényleges értékek
@@ -160,10 +162,8 @@ class TestSingUp(object):
         print(f"Assert a pozitív ágon: {actual_str['reg_succ']} ({actual_str['reg_succ_s']})")
 
     @allure.id('TC1.3 cond P+ ')
-    @allure.title('Regisztráció - Míg sikeres nem lesz')
+    @allure.title('Regisztráció - Míg sikeres nem lesz (ha a próbált felhasználónév már foglalt lenne)')
     def test_sign_up_while(self):
-        ### regisztrációs folyamat ciklussal, arra az esetre, ha a megelöző felhasználó név már foglalt lenne
-
         ### reg. folyamat indítása menűpont kattintásával
         self.useRegistrationButton()
 
@@ -215,9 +215,8 @@ class TestSingUp(object):
 
 # TC2: Bejelentkezés --------------------------------------------------------------------------------------------------------------------
     @allure.id('TC2. P+')
-    @allure.title('Belépés sikerességének ellenőrzése')
+    @allure.title('Belépés sikerességének ellenőrzése navbar menu elemszámával, a "Log out" gomb meglétével')
     def test_sign_in(self):
-        ### Sikeres bejelentkezés ellenőrzése
         # belépési rutin folyamat
         self.signin_rutin()
 
@@ -245,17 +244,15 @@ class TestSingUp(object):
 
 # TC3: Adatkezelési nyilatkozat használata ----------------------------------------------------------------------------------------------
     @allure.id('TC3. P+')
-    @allure.title('Cookie policy acceptance')
+    @allure.title('Cookie policy - "I accept!" gombfelírat ellenőrzése')
     def test_gdpr_acceptance(self):
-        ### 3.	Adatkezelési nyilatkozat használata
-
         #belépési rutin folyamat
         self.signin_rutin()
 
         ### sütihasználati politikát elfogadó gomb
-        accept_btn= WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//button[@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]/div')))
+        accept_btn=self.accept_cookies()
 
-        ### Öszzevetésre szánt gombfelíratok
+        ### Öszzevetésre szánt gombfelíratok lekérése
         accept_btn_text=accept_btn.text
         expected_str = self.expected_text(info='Accept')
         ## cookie policy elfogadásához tartotzó gomb szövegének ellenőrzése - 'I accept!' gomb
@@ -264,7 +261,13 @@ class TestSingUp(object):
         accept_btn.click()
 
 # TC4:	Adatok listázása-----------------------------------------------------------------------------------------------------------------
-
+    @allure.id('TC4. N+')
+    @allure.title('Adatok listázásának ellenőrzése')
+    def check_listed_data(self):
+        #belépési rutin folyamat
+        self.signin_rutin()
+        accept_btn = self.accept_cookies()
+        accept_btn.click()
 
 
 # TC5: Több oldalas lista bejárása-------------------------------------------------------------------------------------------------------
