@@ -45,21 +45,21 @@ class TestConduit:
         confirm_signin.click()
         time.sleep(1)
 
-    # TC1 - Adatkezelési nyilatkozat használata
+    TC1 - Adatkezelési nyilatkozat használata
 
-    # def test_cookies(self):
-    #     self.browser.refresh()
-    #
-    #     accept_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located(
-    #         (By.XPATH, "//button[@class= 'cookie__bar__buttons__button cookie__bar__buttons__button--accept']")))
-    #     accept_btn.click()
-    #
-    #     cookie_accept = self.browser.get_cookie("vue-cookie-accept-decline-cookie-policy-panel")
-    #
-    #     assert cookie_accept["value"] == "accept"
-    #     time.sleep(2)
-    #
-    #     print("TC1 - Az adatkezelési nyilatkozat használata teszteset sikeresen lefutott!")
+    def test_cookies(self):
+        self.browser.refresh()
+
+        accept_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located(
+            (By.XPATH, "//button[@class= 'cookie__bar__buttons__button cookie__bar__buttons__button--accept']")))
+        accept_btn.click()
+
+        cookie_accept = self.browser.get_cookie("vue-cookie-accept-decline-cookie-policy-panel")
+
+        assert cookie_accept["value"] == "accept"
+        time.sleep(2)
+
+        print("TC1 - Az adatkezelési nyilatkozat használata teszteset sikeresen lefutott!")
     #
     # # TC2 - Regisztráció
     #
