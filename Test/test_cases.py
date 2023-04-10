@@ -125,18 +125,18 @@ class TestConduit:
 #
 #     # TC5 - Több oldalas lista bejárása
 #
-    def test_all_pages(self):
-        self.login()
-        time.sleep(2)
-        page_numbers = self.browser.find_elements(By.XPATH, '//a[@class="page-link"]')
-        pages = []
-        for link in page_numbers:
-            link.click()
-            pages.append(link)
-        time.sleep(2)
-        assert len(page_numbers) == len(pages)
-        print("TC5 - A több oldalas lista bejárása teszteset sikeresen lefutott!")
-#
+#     def test_all_pages(self):
+#         self.login()
+#         time.sleep(2)
+#         page_numbers = self.browser.find_elements(By.XPATH, '//a[@class="page-link"]')
+#         pages = []
+#         for link in page_numbers:
+#             link.click()
+#             pages.append(link)
+#         time.sleep(2)
+#         assert len(page_numbers) == len(pages)
+#         print("TC5 - A több oldalas lista bejárása teszteset sikeresen lefutott!")
+# #
 #     # TC6 - Új adat bevitel
 #     def test_new_article(self):
 #         self.login()
