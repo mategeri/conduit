@@ -1,0 +1,1 @@
+TC6 - Az új adat bevitel teszteset sikeresen lefutott!
