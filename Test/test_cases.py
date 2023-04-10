@@ -210,26 +210,26 @@ class TestConduit:
     #             print("TC7 - Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!")
 
 #     # TC8 Meglévő adat módosítás
-#
-    # def test_modification_of_existing_username(self):
-    #     self.login()
-    #     time.sleep(2)
-    #     settings_link = self.browser.find_element(By.XPATH, '//a[@href="#/settings"]')
-    #     settings_link.click()
-    #     time.sleep(1)
-    #     current_username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Your username"]')
-    #     current_username = current_username_input.get_attribute('value')
-    #     current_username_input.clear()
-    #     modified_username = current_username + " módosítva"
-    #     for char in modified_username:
-    #         current_username_input.send_keys(char)
-    #         time.sleep(0.1)
-    #     update_settings_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Update Settings")]')
-    #     update_settings_button.click()
-    #     updated_username = self.browser.find_element(By.XPATH, '//input[@placeholder="Your username"]') \
-    #         .get_attribute('value')
-    #     assert updated_username == modified_username
-    #     print("TC8 - A meglévő adat módosítás teszteset sikeresen lefutott!")
+
+    def test_modification_of_existing_username(self):
+        self.login()
+        time.sleep(2)
+        settings_link = self.browser.find_element(By.XPATH, '//a[@href="#/settings"]')
+        settings_link.click()
+        time.sleep(1)
+        current_username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Your username"]')
+        current_username = current_username_input.get_attribute('value')
+        current_username_input.clear()
+        modified_username = current_username + " módosítva"
+        for char in modified_username:
+            current_username_input.send_keys(char)
+            time.sleep(0.1)
+        update_settings_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Update Settings")]')
+        update_settings_button.click()
+        updated_username = self.browser.find_element(By.XPATH, '//input[@placeholder="Your username"]') \
+            .get_attribute('value')
+        assert updated_username == modified_username
+        print("TC8 - A meglévő adat módosítás teszteset sikeresen lefutott!")
 #
 #     # TC9 Adat vagy adatok törlése.
 #
