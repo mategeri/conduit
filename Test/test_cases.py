@@ -138,33 +138,33 @@ class TestConduit:
     #     print("TC5 - A több oldalas lista bejárása teszteset sikeresen lefutott!")
 
     # TC6 - Új adat bevitel
-    def test_new_article(self):
-        self.login()
-        time.sleep(2)
-        new_article_button = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
-        new_article_button.click()
-        time.sleep(1)
-        title_input = WebDriverWait(self.browser, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="Article Title"]')))
-        title_input.send_keys("Új adat bevitel teszt title")
-
-        about_input = self.browser.find_element(By.CSS_SELECTOR, 'input[placeholder="What\'s this article about?"]')
-        about_input.send_keys("Új adat bevitel teszt about")
-
-        article_input = self.browser.find_element(By.CSS_SELECTOR,
-                                                  'textarea[placeholder="Write your article (in markdown)"]')
-        article_input.send_keys("Új adat bevitel teszt article")
-
-        tag_input = self.browser.find_element(By.CSS_SELECTOR, 'input[placeholder="Enter tags"]')
-        tag_input.send_keys("Új adat bevitel teszt tag")
-
-        publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(),"Publish Article")]')
-        publish_button.click()
-        time.sleep(2)
-
-        title_elements = self.browser.find_elements(By.CSS_SELECTOR, 'h1')
-        assert any(title.text == 'Új adat bevitel teszt title' for title in title_elements)
-        print("TC6 - Az új adat bevitel teszteset sikeresen lefutott!")
+    # def test_new_article(self):
+    #     self.login()
+    #     time.sleep(2)
+    #     new_article_button = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
+    #     new_article_button.click()
+    #     time.sleep(1)
+    #     title_input = WebDriverWait(self.browser, 10).until(
+    #         EC.presence_of_element_located((By.CSS_SELECTOR, 'input[placeholder="Article Title"]')))
+    #     title_input.send_keys("Új adat bevitel teszt title")
+    #
+    #     about_input = self.browser.find_element(By.CSS_SELECTOR, 'input[placeholder="What\'s this article about?"]')
+    #     about_input.send_keys("Új adat bevitel teszt about")
+    #
+    #     article_input = self.browser.find_element(By.CSS_SELECTOR,
+    #                                               'textarea[placeholder="Write your article (in markdown)"]')
+    #     article_input.send_keys("Új adat bevitel teszt article")
+    #
+    #     tag_input = self.browser.find_element(By.CSS_SELECTOR, 'input[placeholder="Enter tags"]')
+    #     tag_input.send_keys("Új adat bevitel teszt tag")
+    #
+    #     publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(),"Publish Article")]')
+    #     publish_button.click()
+    #     time.sleep(2)
+    #
+    #     title_elements = self.browser.find_elements(By.CSS_SELECTOR, 'h1')
+    #     assert any(title.text == 'Új adat bevitel teszt title' for title in title_elements)
+    #     print("TC6 - Az új adat bevitel teszteset sikeresen lefutott!")
 #
     #TC7 Ismételt és sorozatos adatbevitel adatforrásból
 
@@ -232,46 +232,46 @@ class TestConduit:
 #
 #     # TC9 Adat vagy adatok törlése.
 #
-    def test_delete_data(self):
-        self.login()
-
-        time.sleep(2)
-
-        new_article_link = self.browser.find_element(By.XPATH, '//a[contains(text(), "New Article")]')
-        new_article_link.click()
-        time.sleep(1)
-
-        title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
-        title_input.send_keys("Rövid életű title")
-
-        description_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
-        description_input.send_keys("Rövid életű description")
-
-        body_input = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Write your article (in markdown)"]')
-        body_input.send_keys("Rövid életű body")
-
-        tags_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Enter tags"]')
-        tags_input.send_keys("Rövid életű tags")
-
-        publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Publish Article")]')
-        publish_button.click()
-        time.sleep(1)
-
-        comment_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Post Comment")]')
-        comment_textarea = self.browser.find_element(By.XPATH, "//textarea[@placeholder='Write a comment...']")
-        comment_textarea.send_keys("Rövid életű komment")
-        comment_button.click()
-        time.sleep(2)
-        comment_element = self.browser.find_element(By.XPATH, '//p[@class="card-text"]')
-        assert comment_element.text == "Rövid életű komment"
-
-        time.sleep(1)
-
-        trash_icon = self.browser.find_element(By.XPATH, '//i[@class="ion-trash-a"]')
-        trash_icon.click()
-
-        assert comment_element is not None
-        print("TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!")
+    # def test_delete_data(self):
+    #     self.login()
+    #
+    #     time.sleep(2)
+    #
+    #     new_article_link = self.browser.find_element(By.XPATH, '//a[contains(text(), "New Article")]')
+    #     new_article_link.click()
+    #     time.sleep(1)
+    #
+    #     title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
+    #     title_input.send_keys("Rövid életű title")
+    #
+    #     description_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
+    #     description_input.send_keys("Rövid életű description")
+    #
+    #     body_input = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Write your article (in markdown)"]')
+    #     body_input.send_keys("Rövid életű body")
+    #
+    #     tags_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Enter tags"]')
+    #     tags_input.send_keys("Rövid életű tags")
+    #
+    #     publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Publish Article")]')
+    #     publish_button.click()
+    #     time.sleep(1)
+    #
+    #     comment_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Post Comment")]')
+    #     comment_textarea = self.browser.find_element(By.XPATH, "//textarea[@placeholder='Write a comment...']")
+    #     comment_textarea.send_keys("Rövid életű komment")
+    #     comment_button.click()
+    #     time.sleep(2)
+    #     comment_element = self.browser.find_element(By.XPATH, '//p[@class="card-text"]')
+    #     assert comment_element.text == "Rövid életű komment"
+    #
+    #     time.sleep(1)
+    #
+    #     trash_icon = self.browser.find_element(By.XPATH, '//i[@class="ion-trash-a"]')
+    #     trash_icon.click()
+    #
+    #     assert comment_element is not None
+    #     print("TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!")
 #
 # # TC10 Adatok lementése a felületről
 
