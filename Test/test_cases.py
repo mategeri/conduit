@@ -261,7 +261,7 @@ class TestConduit:
         comment_textarea = self.browser.find_element(By.XPATH, "//textarea[@placeholder='Write a comment...']")
         comment_textarea.send_keys("Rövid életű komment")
         comment_button.click()
-
+        time.sleep(2)
         comment_element = self.browser.find_element(By.XPATH, '//p[@class="card-text"]')
         assert comment_element.text == "Rövid életű komment"
 
@@ -271,7 +271,6 @@ class TestConduit:
         trash_icon.click()
 
         assert comment_element is not None
-        time.sleep(2)
         print("TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!")
 #
 # # TC10 Adatok lementése a felületről
