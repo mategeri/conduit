@@ -18,6 +18,15 @@ class Test11ConduitFunction(object):
     def useSignInButton(self):
         WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/login"]'))).click()
 
+    def log_in_btn(self):
+        WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.XPATH, '//a[@href="#/login"]')))
+
+    def log_out_btn(self):
+        WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.XPATH, '//i[@class="ion-android-exit"]')))
+
+
 
     def gathering_input_fields(self, inp_fields_elements: dict, placeholders_dict: dict):
         placeholders = list(placeholders_dict.keys())
@@ -114,6 +123,13 @@ class Test11ConduitFunction(object):
         accept_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located(
             (By.XPATH, '//button[@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]/div')))
         return accept_btn
+
+    def tag_list(self):
+        predef_tags=('lorem', 'ipsum', 'dolor', 'nisil', 'urna', 'nunc', 'laoreet', 'dorum', 'loret', 'nibih', 'mitast', 'leo' )
+        return predef_tags
+
+
+
 
     def setup_method(self):
         service = Service(executable_path=ChromeDriverManager().install())
@@ -266,8 +282,12 @@ class Test11ConduitFunction(object):
     def check_listed_data(self):
         #belépési rutin folyamat
         self.signin_rutin()
+        # sütihasználati politika elfogadása
         accept_btn = self.accept_cookies()
         accept_btn.click()
+        predef_tags=self.tag_list()
+        actual_tag=WebDriverWait(self.browser, 5).until
+
 
 
 # TC5: Több oldalas lista bejárása-------------------------------------------------------------------------------------------------------
@@ -304,8 +324,8 @@ class Test11ConduitFunction(object):
         if menusor_hossz == 5:  # sikeres belépés
             assert menusor_hossz == 5
             print(f'\nMenuelemek száma: {menusor_hossz} -> Belépés megvalósult!')
-            WebDriverWait(self.browser, 5).until(
-                EC.presence_of_element_located((By.XPATH, '//i[@class="ion-android-exit"]'))).click()
+            find_log_ou_btn=self.log_out_btn()
+            find_log_ou_btn.click()
 
         # self.browser.refresh()
         navbar_items = self.locate_navbar_items()
@@ -313,8 +333,7 @@ class Test11ConduitFunction(object):
         if menusor_hossz == 3:  # sikeres belépés
             assert menusor_hossz == 3
             print(f'LogOUT "+" ág ellenőrzése: menuelemek száma {menusor_hossz} -> Kilépés megvalósult!')
-            find_login_btn=WebDriverWait(self.browser, 5).until(
-                EC.presence_of_element_located((By.XPATH, '//a[@href="#/login"]')))
+            find_login_btn=self.log_in_btn()
             assert find_login_btn
             ### assert "Log out" felírat meglétének ellenőrzésével
             # user_prof_btns = self.browser.find_elements(By.XPATH,
