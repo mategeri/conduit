@@ -288,7 +288,7 @@ class Test11ConduitFunction(object):
             else:
                 if n == 1:
                     ### Alábbi csak a konzolos 'többletinfó' kiíratáshoz szükséges
-                    actual_str['reg_succ'] = 'Sikeres regisztráció'
+                    reg_succ_N = 'Sikeres regisztráció'
                     reg_succ_s_N = 'elsőre'
 
                 ### REG. ELLENŐRZÉSE POZITÍV ÁGON - SIKERES REG.
