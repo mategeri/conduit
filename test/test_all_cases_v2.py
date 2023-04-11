@@ -59,9 +59,7 @@ class Test11ConduitFunction(object):
             send_this_key = inp_dict_sub[inpName]
             inpValue.send_keys(send_this_key)
 
-        WebDriverWait(self.browser, 5).until(
-            EC.presence_of_element_located(
-                (By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]'))).click()
+        WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]'))).click()
 
     def reg_process_init(self, keyword: str):
         ### reg. folyamat indítása menűpont kattintásával
@@ -343,7 +341,7 @@ class Test11ConduitFunction(object):
         ## cookie policy elfogadásához tartotzó gomb szövegének ellenőrzése - 'I accept!' gomb
         assert accept_btn_text == expected_str['Text']
 
-        accept_btn.click()
+        # accept_btn.click()
 
     # TC4:	Adatok listázása-----------------------------------------------------------------------------------------------------------------
     @allure.id('TC4. P+')
@@ -383,7 +381,6 @@ class Test11ConduitFunction(object):
         DispATitle=WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//div[@class="container"]//h1')))
         ### Ellenőrizzük a megjelenő cikk címezejét, hogy egyezik-e a beküldött címadattal
         assert DispATitle.text == GiveNewATitle
-
 
 
     # TC7: Ismételt és sorozatos adatbevitel adatforrásból-----------------------------------------------------------------------------------
