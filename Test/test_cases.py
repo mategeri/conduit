@@ -214,7 +214,9 @@ class TestConduit:
     def test_import_datas_from_csv(self):
         self.login()
         time.sleep(2)
-        with open(os.path.join(os.path.dirname(__file__), 'datas.csv'), 'r') as file:
+        datas_file = 'datas.csv'
+        datas_path = os.path.join(os.path.dirname(__file__), datas_file)
+        with open(datas_path, 'r') as file:
             reader = csv.reader(file)
             next(reader)
             for row in reader:
