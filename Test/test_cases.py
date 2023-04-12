@@ -1,5 +1,6 @@
 import time
 import csv
+import os
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
@@ -8,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-import os
+
 
 
 class TestConduit:
@@ -286,12 +287,14 @@ class TestConduit:
             (By.XPATH, '//div[@class="sidebar"]/div/a[@class="tag-pill tag-default"]')))
         csv_file = 'tags.csv'
         csv_path = os.path.join(os.path.dirname(__file__), csv_file)
-        with open(csv_path, 'w') as file:
+        with open(csv_path, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
             for tag in tag_list:
                 writer.writerow([tag.text])
-        with open(csv_path, 'r') as file:
-            first_row = file.readline().rstrip('\n')
+
+        with open(csv_path, 'r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            first_row = next(reader)[0]
             assert first_row == tag_list[0].text
             print("TC10 - Adatok lementése a felületről teszteset sikeresen lefutott!")
 
