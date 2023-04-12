@@ -1,0 +1,1 @@
+TC10 - Adatok lementése a felületről teszteset sikeresen lefutott!
