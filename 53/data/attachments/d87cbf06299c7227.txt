@@ -1,0 +1,3 @@
+TC7 - Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!
+TC7 - Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!
+TC7 - Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!
