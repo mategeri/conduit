@@ -46,7 +46,7 @@ class TestConduit:
         confirm_signin.click()
         time.sleep(1)
 
-    # TC1 - Adatkezelési nyilatkozat használata
+# TC1 - Adatkezelési nyilatkozat használata
 
     def test_cookies(self):
         self.browser.refresh()
@@ -61,8 +61,8 @@ class TestConduit:
         time.sleep(2)
 
         print("TC1 - Az adatkezelési nyilatkozat használata teszteset sikeresen lefutott!")
-    #
-    # TC2 - Regisztráció
+
+# TC2 - Regisztráció
 
     def test_registration(self):
         signup_button = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
@@ -85,7 +85,7 @@ class TestConduit:
 
         print("TC2 - A regisztráció teszteset sikeresen lefutott!")
 
-    # TC3 - Bejelentkezés
+# TC3 - Bejelentkezés
 
     def test_login(self):
         self.login()
@@ -96,7 +96,7 @@ class TestConduit:
         assert profile.text == self.username
         print("TC3 - A bejelentkezés teszteset sikeresen lefutott!")
 
-    # TC4 - Adatok listázása
+# TC4 - Adatok listázása
     def test_data_list(self):
         self.login()
         time.sleep(2)
@@ -125,7 +125,7 @@ class TestConduit:
         assert article_titles == refreshed_article_titles
         print("TC4 - Adatok listázása teszteset sikeresen lefutott!")
 
-    # TC5 - Több oldalas lista bejárása
+# TC5 - Több oldalas lista bejárása
 
     def test_all_pages(self):
         self.login()
@@ -139,7 +139,7 @@ class TestConduit:
         assert len(page_numbers) == len(pages)
         print("TC5 - A több oldalas lista bejárása teszteset sikeresen lefutott!")
 
-    # TC6 - Új adat bevitel
+# TC6 - Új adat bevitel
     def test_new_article(self):
         self.login()
         time.sleep(2)
@@ -168,7 +168,7 @@ class TestConduit:
         assert any(title.text == 'Új adat bevitel teszt title' for title in title_elements)
         print("TC6 - Az új adat bevitel teszteset sikeresen lefutott!")
 
-    #TC7 Ismételt és sorozatos adatbevitel adatforrásból
+# TC7 Ismételt és sorozatos adatbevitel adatforrásból
 
     def test_import_datas_from_csv(self):
         self.login()
@@ -212,7 +212,7 @@ class TestConduit:
                 assert article_title.text == title
                 print("TC7 - Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!")
 
-#     # TC8 Meglévő adat módosítás
+# TC8 Meglévő adat módosítás
 
     def test_modification_of_existing_username(self):
         self.login()
@@ -233,8 +233,8 @@ class TestConduit:
             .get_attribute('value')
         assert updated_username == modified_username
         print("TC8 - A meglévő adat módosítás teszteset sikeresen lefutott!")
-#
-#     # TC9 Adat vagy adatok törlése.
+
+# TC9 Adat vagy adatok törlése.
 
     def test_delete_data(self):
         self.login()
@@ -276,23 +276,9 @@ class TestConduit:
 
         assert comment_element is not None
         print("TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!")
-#
-# # TC10 Adatok lementése a felületről
 
-    # def test_save_data_to_csv(self):
-    #     self.login()
-    #     time.sleep(2)
-    #     tag_list = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located(
-    #         (By.XPATH, '//div[@class="sidebar"]/div/a[@class="tag-pill tag-default"]')))
-    #     with open('tags.csv', 'w') as file:
-    #         writer = csv.writer(file)
-    #         for tag in tag_list:
-    #             writer.writerow([tag.text])
-    #     with open('tags.csv', 'r') as file:
-    #         first_row = file.readline().rstrip('\n')
-    #         assert first_row == tag_list[0].text
-    #         print("TC10 - Adatok lementése a felületről teszteset sikeresen lefutott!")
-#TESZTFÜGGVÉNY2
+#TC10 Adatok lementése a felületről
+
     def test_save_data_to_csv(self):
         self.login()
         time.sleep(2)
