@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+import os
 
 
 class TestConduit:
@@ -169,15 +170,56 @@ class TestConduit:
 
     #TC7 Ismételt és sorozatos adatbevitel adatforrásból
 
+    # def test_import_datas_from_csv(self):
+    #     self.login()
+    #     time.sleep(2)
+    #     with open('datas.csv', 'r') as file:
+    #         reader = csv.reader(file)
+    #         next(reader)
+    #         for row in reader:
+    #             title, about, article, tag = row
+    #
+    #             new_article_button = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
+    #             new_article_button.click()
+    #
+    #             WebDriverWait(self.browser, 10).until(
+    #                 EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Article Title"]'))
+    #             )
+    #
+    #             title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
+    #             title_input.send_keys(title)
+    #
+    #             about_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
+    #             about_input.send_keys(about)
+    #
+    #             article_input = self.browser.find_element(By.XPATH,
+    #                                                       '//textarea[@placeholder="Write your article (in markdown)"]')
+    #             article_input.send_keys(article)
+    #
+    #             tag_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Enter tags"]')
+    #             tag_input.send_keys(tag)
+    #             tag_input.send_keys(Keys.RETURN)
+    #
+    #             publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Publish Article")]')
+    #             publish_button.click()
+    #
+    #             article_title = WebDriverWait(self.browser, 10).until(
+    #                 EC.presence_of_element_located((By.XPATH, '//h1'))
+    #             )
+    #
+    #             assert article_title.text == title
+    #             print("TC7 - Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!")
+
+#######################TESZTFÜGGVÉNY
     def test_import_datas_from_csv(self):
         self.login()
         time.sleep(2)
-        with open('datas.csv', 'r') as file:
+        with open(os.path.join(os.path.dirname(__file__), 'datas.csv'), 'r') as file:
             reader = csv.reader(file)
             next(reader)
             for row in reader:
                 title, about, article, tag = row
-
+                time.sleep(2)
                 new_article_button = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
                 new_article_button.click()
 
