@@ -1,0 +1,1 @@
+TC4 - Adatok listázása teszteset sikeresen lefutott!
