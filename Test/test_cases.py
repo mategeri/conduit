@@ -108,33 +108,7 @@ class TestConduit:
                                               '//div[contains(@class, "home-page")]//div[contains(@class, "article-preview")]//h1')
         article_titles = [article.text for article in articles[:10]]
 
-        print("\nA global feed első 10 bejegyzése:")
-        for i, title in enumerate(article_titles, start=1):
-            print(f"{i}. {title}")
-
-        time.sleep(2)
-        self.browser.refresh()
-        time.sleep(2)
-
-        refreshed_articles = self.browser.find_elements(By.XPATH,
-                                                        '//div[contains(@class, "home-page")]//div[contains(@class, "article-preview")]//h1')
-
-        refreshed_article_titles = [article.text for article in refreshed_articles[:10]]
-        assert article_titles == refreshed_article_titles
-        print("TC4 - Adatok listázása teszteset sikeresen lefutott!")
-
-    ############# Adatok listázása teszt
-    def test_data_list2(self):
-        self.login()
-
-        global_feed_link = self.browser.find_element(By.XPATH, '//a[@href="#/" and @aria-current="page"]')
-        global_feed_link.click()
-        time.sleep(2)
-        articles = self.browser.find_elements(By.XPATH,
-                                              '//div[contains(@class, "home-page")]//div[contains(@class, "article-preview")]//h1')
-        article_titles = [article.text for article in articles[:10]]
-
-        allure.attach('\n'.join(article_titles), name='global_feed_titles', attachment_type=allure.attachment_type.TEXT)
+        allure.attach('\n'.join(article_titles), name='A global feed első 10 bejegyzésének a címei:', attachment_type=allure.attachment_type.TEXT)
 
         time.sleep(2)
         self.browser.refresh()
@@ -253,6 +227,7 @@ class TestConduit:
         update_settings_button.click()
         updated_username = self.browser.find_element(By.XPATH, '//input[@placeholder="Your username"]') \
             .get_attribute('value')
+        allure.attach(updated_username, name="Az új felhasználónév:")
         assert updated_username == modified_username
         print("TC8 - A meglévő adat módosítás teszteset sikeresen lefutott!")
 
