@@ -266,10 +266,14 @@ class TestConduit:
 
         time.sleep(1)
 
+        comment_element = self.browser.find_element(By.XPATH, '//p[@class="card-text"]')
         trash_icon = self.browser.find_element(By.XPATH, '//i[@class="ion-trash-a"]')
         trash_icon.click()
 
+        time.sleep(2)
+
         assert comment_element is not None
+
         print("TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!")
 
     # TC10 Adatok lementése a felületről
