@@ -75,12 +75,11 @@ class TestConduit:
         email_input.send_keys(self.email)
         password_input.send_keys(self.password)
         signup_button.click()
-        time.sleep(2)
-        assert self.browser.find_element(By.XPATH, '//button[@class="swal-button swal-button--confirm"]').is_displayed()
+        time.sleep(3)
+        assert self.browser.find_element(By.XPATH, '//div[@class="swal-title" and text()="Welcome!"]')
         reg_ok_button = self.browser.find_element(By.XPATH, '//button[text()="OK"]')
         time.sleep(2)
         reg_ok_button.click()
-
         print("TC2 - A regisztráció teszteset sikeresen lefutott!")
 
     # TC3 - Bejelentkezés
