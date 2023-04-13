@@ -293,14 +293,14 @@ class TestConduit:
 
         with open(csv_path, 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
-            next(reader)  # skip first row
-            csv_data = [row[0] for row in reader]  # Az első oszlop tartalma
+            next(reader)
+            csv_data = [row[0] for row in reader]
             tag_data = [tag.text for tag in tag_list]
             assert csv_data == tag_data
 
         with open(csv_path, 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
-            next(reader)  # skip first row
+            next(reader)
             csv_content = "\n".join([",".join(row) for row in reader])
             allure.attach(csv_content, name='A tags.csv tartalma:', attachment_type=allure.attachment_type.CSV)
             print("TC10 - Adatok lementése a felületről teszteset sikeresen lefutott!")
@@ -317,4 +317,4 @@ class TestConduit:
         login_link = self.browser.find_element(By.CSS_SELECTOR, 'a[href="#/login"]')
         assert login_link.is_displayed(), "Login link is not displayed"
         print("TC11 - A kijelentkezés teszteset sikeresen lefutott!")
-#
+
