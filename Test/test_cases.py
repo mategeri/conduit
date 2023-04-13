@@ -290,6 +290,8 @@ class TestConduit:
             reader = csv.reader(file)
             first_row = next(reader)[0]
             assert first_row == tag_list[0].text
+            csv_content = "\n".join([",".join(row) for row in reader])
+            allure.attach(csv_content, name='A tag.csv tartalma:', attachment_type=allure.attachment_type.CSV)
             print("TC10 - Adatok lementése a felületről teszteset sikeresen lefutott!")
 
     # TC11 Kijelentkezés
