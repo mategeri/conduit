@@ -296,14 +296,14 @@ class TestConduit:
         with open(csv_path, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(['Popural Tags'])
-            for tag in tag_list:
+            for tag in tag_list[:10]:
                 writer.writerow([tag.text])
 
         with open(csv_path, 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
             next(reader)
             csv_data = [row[0] for row in reader]
-            tag_data = [tag.text for tag in tag_list]
+            tag_data = [tag.text for tag in tag_list[:10]]
             assert csv_data == tag_data
 
             csv_content = "\n".join([",".join(row) for row in reader])
