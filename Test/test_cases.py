@@ -220,9 +220,7 @@ class TestConduit:
         current_username = current_username_input.get_attribute('value')
         current_username_input.clear()
         modified_username = current_username + " módosítva"
-        for char in modified_username:
-            current_username_input.send_keys(char)
-            time.sleep(0.1)
+        current_username_input.send_keys(modified_username)
         update_settings_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Update Settings")]')
         update_settings_button.click()
         updated_username = self.browser.find_element(By.XPATH, '//input[@placeholder="Your username"]') \
@@ -236,44 +234,54 @@ class TestConduit:
     def test_delete_data(self):
         self.login()
 
-        new_article_link = self.browser.find_element(By.XPATH, '//a[contains(text(), "New Article")]')
-        new_article_link.click()
-        time.sleep(1)
+        short_bio_about_you_text = "Ezt a szöveget azért írom ide, hogy törölhessem."
 
-        title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
-        title_input.send_keys("Rövid életű title")
-
-        description_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
-        description_input.send_keys("Rövid életű description")
-
-        body_input = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Write your article (in markdown)"]')
-        body_input.send_keys("Rövid életű body")
-
-        tags_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Enter tags"]')
-        tags_input.send_keys("Rövid életű tags")
-
-        publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Publish Article")]')
-        publish_button.click()
-        time.sleep(1)
-
-        comment_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Post Comment")]')
-        comment_textarea = self.browser.find_element(By.XPATH, "//textarea[@placeholder='Write a comment...']")
-        comment_textarea.send_keys("Rövid életű komment")
-        comment_button.click()
-        time.sleep(2)
-        comment_element = self.browser.find_element(By.XPATH, '//p[@class="card-text"]')
-        assert comment_element.text == "Rövid életű komment"
-
-        time.sleep(1)
-
-        comment_element = self.browser.find_element(By.XPATH, '//p[@class="card-text"]')
-        trash_icon = self.browser.find_element(By.XPATH, '//i[@class="ion-trash-a"]')
-        trash_icon.click()
-
+        settings_link = self.browser.find_element(By.XPATH, '//a[@href="#/settings"]')
+        settings_link.click()
         time.sleep(2)
 
-        assert comment_element is not None
+        bio_input = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Short bio about you"]')
+        bio_input.send_keys(Keys.CONTROL + 'a')
+        bio_input.send_keys(Keys.BACKSPACE)
 
+        update_settings_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Update Settings")]')
+        update_settings_button.click()
+        time.sleep(3)
+
+        before_the_text_ok_btn = self.browser.find_element(By.XPATH,
+                                                           '//button[@class="swal-button swal-button--confirm"]')
+        before_the_text_ok_btn.click()
+        time.sleep(2)
+
+        empty_bio_input_text = bio_input.get_attribute('value')
+
+        bio_input.send_keys(short_bio_about_you_text)
+        time.sleep(1)
+
+        update_settings_button.click()
+        time.sleep(3)
+
+        after_the_text_ok_btn = self.browser.find_element(By.XPATH,
+                                                          '//button[@class="swal-button swal-button--confirm"]')
+        after_the_text_ok_btn.click()
+        time.sleep(2)
+
+        assert bio_input.get_attribute('value') == short_bio_about_you_text
+
+        time.sleep(2)
+        bio_input.send_keys(Keys.CONTROL + 'a')
+        bio_input.send_keys(Keys.BACKSPACE)
+        update_settings_button.click()
+        time.sleep(3)
+        after_remove_text_ok_btn = self.browser.find_element(By.XPATH,
+                                                             '//button[@class="swal-button swal-button--confirm"]')
+        after_remove_text_ok_btn.click()
+        time.sleep(2)
+
+        after_remove_bio_input = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Short bio about you"]')
+        after_remove_bio_input_text = after_remove_bio_input.get_attribute('value')
+
+        assert empty_bio_input_text == after_remove_bio_input_text
         print("TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!")
 
     # TC10 Adatok lementése a felületről
@@ -298,13 +306,9 @@ class TestConduit:
             tag_data = [tag.text for tag in tag_list]
             assert csv_data == tag_data
 
-        with open(csv_path, 'r', encoding='utf-8') as file:
-            reader = csv.reader(file)
-            next(reader)
             csv_content = "\n".join([",".join(row) for row in reader])
             allure.attach(csv_content, name='A tags.csv tartalma:', attachment_type=allure.attachment_type.CSV)
             print("TC10 - Adatok lementése a felületről teszteset sikeresen lefutott!")
-
 
     # TC11 Kijelentkezés
 
