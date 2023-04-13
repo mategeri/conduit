@@ -283,16 +283,24 @@ class TestConduit:
         csv_path = os.path.join(os.path.dirname(__file__), csv_file)
         with open(csv_path, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file)
+            writer.writerow(['Popural Tags'])
             for tag in tag_list:
                 writer.writerow([tag.text])
 
         with open(csv_path, 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
-            first_row = next(reader)[0]
-            assert first_row == tag_list[0].text
+            next(reader)  # skip first row
+            csv_data = [row[0] for row in reader]  # Az első oszlop tartalma
+            tag_data = [tag.text for tag in tag_list]
+            assert csv_data == tag_data
+
+        with open(csv_path, 'r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            next(reader)  # skip first row
             csv_content = "\n".join([",".join(row) for row in reader])
-            allure.attach(csv_content, name='A tag.csv tartalma:', attachment_type=allure.attachment_type.CSV)
+            allure.attach(csv_content, name='A tags.csv tartalma:', attachment_type=allure.attachment_type.CSV)
             print("TC10 - Adatok lementése a felületről teszteset sikeresen lefutott!")
+
 
     # TC11 Kijelentkezés
 
