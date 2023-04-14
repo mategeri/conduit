@@ -227,7 +227,7 @@ class TestConduit:
             .get_attribute('value')
         allure.attach(updated_username, name="Az új felhasználónév:")
         assert updated_username == modified_username
-        allure.attach("TC8 - A meglévő adat módosítás teszteset sikeresen lefutott!")
+        allure.attach("A meglévő adat módosítás teszteset sikeresen lefutott!", name="TC8")
 
     # TC9 Adat vagy adatok törlése.
 
