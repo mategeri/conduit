@@ -219,50 +219,51 @@ class TestConduit:
 
         datas_file = 'datas.csv'
         datas_path = os.path.join(os.path.dirname(__file__), datas_file)
+
+        # Adatok gyűjtése egy listába
+        datas_list = []
         with open(datas_path, 'r') as file:
             reader = csv.reader(file)
             next(reader)
-            all_rows = [row for row in reader]
-        for row in all_rows:
-            title, about, article, tag = row
-            time.sleep(2)
-            new_article_button = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
-            new_article_button.click()
+            for row in reader:
+                title, about, article, tag = row
+                datas_list.append((title, about, article, tag))
+                time.sleep(2)
+                new_article_button = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
+                new_article_button.click()
 
-            WebDriverWait(self.browser, 10).until(
-                EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Article Title"]'))
-            )
+                WebDriverWait(self.browser, 10).until(
+                    EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Article Title"]'))
+                )
 
-            title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
-            title_input.send_keys(title)
+                title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
+                title_input.send_keys(title)
 
-            about_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
-            about_input.send_keys(about)
+                about_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
+                about_input.send_keys(about)
 
-            article_input = self.browser.find_element(By.XPATH,
-                                                      '//textarea[@placeholder="Write your article (in markdown)"]')
-            article_input.send_keys(article)
+                article_input = self.browser.find_element(By.XPATH,
+                                                          '//textarea[@placeholder="Write your article (in markdown)"]')
+                article_input.send_keys(article)
 
-            tag_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Enter tags"]')
-            tag_input.send_keys(tag)
-            tag_input.send_keys(Keys.RETURN)
+                tag_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Enter tags"]')
+                tag_input.send_keys(tag)
+                tag_input.send_keys(Keys.RETURN)
 
-            publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Publish Article")]')
-            publish_button.click()
+                publish_button = self.browser.find_element(By.XPATH, '//button[contains(text(), "Publish Article")]')
+                publish_button.click()
 
-            article_title = WebDriverWait(self.browser, 10).until(
-                EC.presence_of_element_located((By.XPATH, '//h1'))
-            )
+                article_title = WebDriverWait(self.browser, 10).until(
+                    EC.presence_of_element_located((By.XPATH, '//h1'))
+                )
 
-            assert article_title.text == title
+                assert article_title.text == title
 
-        with open(datas_path, 'r') as file:
-            all_rows = [row for i, row in enumerate(csv.reader(file)) if i != 0]
-
-        rows_text = '\n'.join(
-            [f"Title: {row[0]}, About: {row[1]}, Article: {row[2]}, Tag: {row[3]}" for row in all_rows])
-        allure.attach(rows_text, name="A datas.csv tartalma:")
-
+        # Adatok kiírása egy attach függvényhívással
+        datas_str = "\n".join(
+            [f"Title: {title}, About: {about}, Article: {article}, Tag: {tag}" for (title, about, article, tag) in
+             datas_list])
+        allure.attach(datas_str, name="A datas.csv tartalma:")
         allure.attach("Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!", name="TC7")
 
     # TC8 Meglévő adat módosítás
