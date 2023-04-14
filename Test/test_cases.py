@@ -225,8 +225,8 @@ class TestConduit:
         update_settings_button.click()
         updated_username = self.browser.find_element(By.XPATH, '//input[@placeholder="Your username"]') \
             .get_attribute('value')
-        allure.attach(updated_username, name="Az új felhasználónév:")
         assert updated_username == modified_username
+        allure.attach(updated_username, name="Az új felhasználónév:")
         allure.attach("A meglévő adat módosítás teszteset sikeresen lefutott!", name="TC8")
 
     # TC9 Adat vagy adatok törlése.
@@ -282,7 +282,7 @@ class TestConduit:
         after_remove_bio_input_text = after_remove_bio_input.get_attribute('value')
 
         assert empty_bio_input_text == after_remove_bio_input_text
-        print("TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!")
+        allure.attach("Adat vagy adatok törlése teszteset sikeresen lefutott!", name="TC9")
 
     # TC10 Adatok lementése a felületről
 
