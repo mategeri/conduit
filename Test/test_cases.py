@@ -57,9 +57,8 @@ class TestConduit:
         cookie_accept = self.browser.get_cookie("vue-cookie-accept-decline-cookie-policy-panel")
 
         assert cookie_accept["value"] == "accept"
-        time.sleep(2)
+        allure.attach("z adatkezelési nyilatkozat használata teszteset sikeresen lefutott!", name="TC1")
 
-        print("TC1 - Az adatkezelési nyilatkozat használata teszteset sikeresen lefutott!")
 
     # TC2 - Regisztráció
 
@@ -81,7 +80,7 @@ class TestConduit:
         reg_ok_button = self.browser.find_element(By.XPATH, '//button[text()="OK"]')
         time.sleep(2)
         reg_ok_button.click()
-        print("TC2 - A regisztráció teszteset sikeresen lefutott!")
+        allure.attach("A regisztráció teszteset sikeresen lefutott!", name="TC2")
 
     # TC3 - Bejelentkezés
 
@@ -95,7 +94,8 @@ class TestConduit:
                 profile = nav_link
                 break
         assert profile.text == self.username
-        print("TC3 - A bejelentkezés teszteset sikeresen lefutott!")
+        allure.attach("A bejelentkezés teszteset sikeresen lefutott!", name="TC3")
+
 
     # TC4 - Adatok listázása
     def test_data_list(self):
@@ -119,7 +119,8 @@ class TestConduit:
 
         refreshed_article_titles = [article.text for article in refreshed_articles[:10]]
         assert article_titles == refreshed_article_titles
-        print("TC4 - Adatok listázása teszteset sikeresen lefutott!")
+        allure.attach("Adatok listázása teszteset sikeresen lefutott!", name="TC4")
+
 
     # TC5 - Több oldalas lista bejárása
 
@@ -133,7 +134,8 @@ class TestConduit:
             pages.append(link)
         time.sleep(2)
         assert len(page_numbers) == len(pages)
-        print("TC5 - A több oldalas lista bejárása teszteset sikeresen lefutott!")
+        allure.attach("A több oldalas lista bejárása teszteset sikeresen lefutott!", name="TC5")
+
 
     # TC6 - Új adat bevitel
     def test_new_article(self):
@@ -162,7 +164,8 @@ class TestConduit:
 
         title_elements = self.browser.find_elements(By.CSS_SELECTOR, 'h1')
         assert any(title.text == 'Új adat bevitel teszt title' for title in title_elements)
-        print("TC6 - Az új adat bevitel teszteset sikeresen lefutott!")
+        allure.attach("Az új adat bevitel teszteset sikeresen lefutott!", name="TC6")
+
 
     # TC7 Ismételt és sorozatos adatbevitel adatforrásból
 
@@ -206,8 +209,7 @@ class TestConduit:
                 )
 
                 assert article_title.text == title
-        print("TC7 - Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!")
-
+        allure.attach("Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!", name="TC7")
     # TC8 Meglévő adat módosítás
 
     def test_modification_of_existing_username(self):
@@ -325,5 +327,6 @@ class TestConduit:
 
         login_link = self.browser.find_element(By.CSS_SELECTOR, 'a[href="#/login"]')
         assert login_link.is_displayed(), "Login link is not displayed"
-        print("TC11 - A kijelentkezés teszteset sikeresen lefutott!")
+        allure.attach("A kijelentkezés teszteset sikeresen lefutott!", name="TC11")
+
 
