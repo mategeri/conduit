@@ -210,6 +210,7 @@ class TestConduit:
 
                 assert article_title.text == title
         allure.attach("Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!", name="TC7")
+
     # TC8 Meglévő adat módosítás
 
     def test_modification_of_existing_username(self):
