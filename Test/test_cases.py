@@ -257,12 +257,12 @@ class TestConduit:
             assert article_title.text == title
 
         with open(datas_path, 'r') as file:
-            file.seek(0)
-            all_rows = [row for row in csv.reader(file)]
+            all_rows = [row for i, row in enumerate(csv.reader(file)) if i != 0]
 
         rows_text = '\n'.join(
             [f"Title: {row[0]}, About: {row[1]}, Article: {row[2]}, Tag: {row[3]}" for row in all_rows])
         allure.attach(rows_text, name="A datas.csv tartalma:")
+
         allure.attach("Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!", name="TC7")
 
     # TC8 Meglévő adat módosítás
