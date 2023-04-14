@@ -206,7 +206,7 @@ class TestConduit:
                 )
 
                 assert article_title.text == title
-                print("TC7 - Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!")
+        print("TC7 - Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!")
 
     # TC8 Meglévő adat módosítás
 
@@ -227,7 +227,7 @@ class TestConduit:
             .get_attribute('value')
         allure.attach(updated_username, name="Az új felhasználónév:")
         assert updated_username == modified_username
-        print("TC8 - A meglévő adat módosítás teszteset sikeresen lefutott!")
+        allure.attach("TC8 - A meglévő adat módosítás teszteset sikeresen lefutott!")
 
     # TC9 Adat vagy adatok törlése.
 
