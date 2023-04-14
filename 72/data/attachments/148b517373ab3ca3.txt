@@ -1,1 +1,0 @@
-TC9 - Adat vagy adatok törlése teszteset sikeresen lefutott!
