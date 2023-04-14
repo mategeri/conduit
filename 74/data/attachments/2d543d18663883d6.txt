@@ -1,1 +1,0 @@
-TC5 - A több oldalas lista bejárása teszteset sikeresen lefutott!
