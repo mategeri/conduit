@@ -57,7 +57,7 @@ class TestConduit:
         cookie_accept = self.browser.get_cookie("vue-cookie-accept-decline-cookie-policy-panel")
 
         assert cookie_accept["value"] == "accept"
-        allure.attach("z adatkezelési nyilatkozat használata teszteset sikeresen lefutott!", name="TC1")
+        allure.attach("Az adatkezelési nyilatkozat használata teszteset sikeresen lefutott!", name="TC1")
 
 
     # TC2 - Regisztráció
