@@ -312,8 +312,8 @@ class TestConduit:
                 allure.attach(csv_content, name='A tags.csv tartalma:', attachment_type=allure.attachment_type.CSV)
 
             assert csv_data == tag_data
+        allure.attach("Adatok lementése a felületről teszteset sikeresen lefutott!", name="TC10")
 
-        print("TC10 - Adatok lementése a felületről teszteset sikeresen lefutott!")
 
     # TC11 Kijelentkezés
 
