@@ -209,8 +209,8 @@ class TestConduit:
                 )
 
                 assert article_title.text == title
-                allure.attach(f"Title: {title}, About: {about}, Article: {article}, Tag: {tag}", name="A datas.csv tartalma:")
 
+        allure.attach(f"Title: {title}, About: {about}, Article: {article}, Tag: {tag}", name="A datas.csv tartalma:")
         allure.attach("Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!", name="TC7")
 
     # TC8 Meglévő adat módosítás
