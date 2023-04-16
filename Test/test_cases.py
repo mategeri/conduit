@@ -213,14 +213,10 @@ class TestConduit:
 
                 assert article_title.text == title
 
-        allure.attach(f"\nElső adatbevitel forrásból: {datas_list[0]}", name="TC7")
-        allure.attach("\n", name="TC7")
         allure.attach(
-            f"Második adatbevitel forrásból: Title: {datas_list[1][0]}, About: {datas_list[1][1]}, Article: {datas_list[1][2]}, Tag: {datas_list[1][3]}",
-            name="TC7")
-        allure.attach(
-            f"Harmadik adatbevitel forrásból: Title: {datas_list[2][0]}, About: {datas_list[2][1]}, Article: {datas_list[2][2]}, Tag: {datas_list[2][3]}",
-            name="TC7")
+            f"\nElső adatbevitel forrásból: {datas_list[0]}\n\nMásodik adatbevitel forrásból: Title: {datas_list[1][0]}, About: {datas_list[1][1]}, Article: {datas_list[1][2]}, Tag: {datas_list[1][3]}\n\nHarmadik adatbevitel forrásból: Title: {datas_list[2][0]}, About: {datas_list[2][1]}, Article: {datas_list[2][2]}, Tag: {datas_list[2][3]}",
+            name="TC7"
+        )
 
         # datas_str = "\n".join(
         #     [f"Title: {title}, About: {about}, Article: {article}, Tag: {tag}" for (title, about, article, tag) in
