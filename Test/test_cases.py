@@ -220,8 +220,6 @@ class TestConduit:
             name="datas.csv tartalma:"
         )
 
-        )
-
         # datas_str = "\n".join(
         #     [f"Title: {title}, About: {about}, Article: {article}, Tag: {tag}" for (title, about, article, tag) in
         #      datas_list])
