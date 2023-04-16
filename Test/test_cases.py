@@ -215,11 +215,11 @@ class TestConduit:
 
         allure.attach(
             "Első adatbevitel forrásból: {}\n\nMásodik adatbevitel forrásból: Title: {}, About: {}, Article: {}, Tag: {}\n\nHarmadik adatbevitel forrásból: Title: {}, About: {}, Article: {}, Tag: {}".format(
-                *datas_list[0], *datas_list[1], *datas_list[2]
+                *datas_list[0], datas_list[1][0], datas_list[1][1], datas_list[1][2], datas_list[1][3],
+                datas_list[2][0], datas_list[2][1], datas_list[2][2], datas_list[2][3]
             ),
             name="datas.csv tartalma:"
         )
-
         # datas_str = "\n".join(
         #     [f"Title: {title}, About: {about}, Article: {article}, Tag: {tag}" for (title, about, article, tag) in
         #      datas_list])
