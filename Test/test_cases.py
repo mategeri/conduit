@@ -213,7 +213,7 @@ class TestConduit:
 
                 assert article_title.text == title
 
-        allure.attach("Datas.csv tartalma:\n\n" + "\n\n".join([", ".join(row) for row in datas_list]), name="Datas.csv tartalma")
+        allure.attach("\n\n".join([", ".join(row) for row in datas_list]), name="Datas.csv tartalma")
 
         allure.attach("Az ismételt és sorozatos adatbevitel adatforrásból teszteset sikeresen lefutott!", name="TC7")
 
