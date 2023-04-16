@@ -214,8 +214,12 @@ class TestConduit:
                 assert article_title.text == title
 
         allure.attach(
-            f"\nElső adatbevitel forrásból: {datas_list[0]}\n\nMásodik adatbevitel forrásból: Title: {datas_list[1][0]}, About: {datas_list[1][1]}, Article: {datas_list[1][2]}, Tag: {datas_list[1][3]}\n\nHarmadik adatbevitel forrásból: Title: {datas_list[2][0]}, About: {datas_list[2][1]}, Article: {datas_list[2][2]}, Tag: {datas_list[2][3]}",
-            name="TC7"
+            "Első adatbevitel forrásból: {}\n\nMásodik adatbevitel forrásból: Title: {}, About: {}, Article: {}, Tag: {}\n\nHarmadik adatbevitel forrásból: Title: {}, About: {}, Article: {}, Tag: {}".format(
+                *datas_list[0], *datas_list[1], *datas_list[2]
+            ),
+            name="datas.csv tartalma:"
+        )
+
         )
 
         # datas_str = "\n".join(
