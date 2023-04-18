@@ -47,6 +47,8 @@ class TestConduit:
 
     # TC1 - Adatkezelési nyilatkozat használata
 
+    # Elfogadom az adatkezelési nyilatkozatot, ellenőrzést végzek a cookie értékénél a value értékre.
+
     def test_cookies(self):
         self.browser.refresh()
 
@@ -61,6 +63,8 @@ class TestConduit:
 
 
     # TC2 - Regisztráció
+
+        # Regisztrációt hajtok végre és ellenőrzöm, hogy a Welcome ablak megjelent e a sikeres regisztrációról.
 
     def test_registration(self):
         signup_button = self.browser.find_element(By.XPATH, '//a[@href="#/register"]')
@@ -84,6 +88,8 @@ class TestConduit:
 
     # TC3 - Bejelentkezés
 
+        #Bejentkezést hajtok végre, és utána ellenőrzöm hogy a username értéke megtalálható e a nav_links listában.
+
     def test_login(self):
         self.login()
 
@@ -98,6 +104,10 @@ class TestConduit:
 
 
     # TC4 - Adatok listázása
+
+        # Megnyitom a global feedet, listába gyűjtöm az első 10 elemét, allure-al kiíratom reportba, frissítem az oldalt és újra
+        # készítek egy listát az első 10 elemmel és egy ellenőrzést készítek a régi és új lista összehasonlításával.
+
     def test_data_list(self):
         self.login()
 
@@ -124,6 +134,9 @@ class TestConduit:
 
     # TC5 - Több oldalas lista bejárása
 
+        # Megkeresem a page-link osztályú elemeket,létrehozok egy pages listát, minden page-link kattintást hozzáadok
+        # a pages listához, a végén pedig összehasonlítom a page_numbers és a pages listák hosszát.
+
     def test_all_pages(self):
         self.login()
 
@@ -138,6 +151,11 @@ class TestConduit:
 
 
     # TC6 - Új adat bevitel
+
+        # Új cikk létrehozása funkciót tesztelem, belépés után, új cikk létrehozása gombra kattintok, a beviteli
+        # mezőket kitöltöm és publikálom. Ellenőrzésként h1-es elemek között megkeresem a ugyanazt az értéket,
+        # amit megadtam a title inputnak.
+
     def test_new_article(self):
         self.login()
 
@@ -166,8 +184,11 @@ class TestConduit:
         assert any(title.text == 'Új adat bevitel teszt title' for title in title_elements)
         allure.attach("Az új adat bevitel teszteset sikeresen lefutott!", name="TC6")
 
-
     # TC7 Ismételt és sorozatos adatbevitel adatforrásból
+
+    # datas.csv-ből listát csinálok, szét osztom 4 adat / sor, kihagyom az első sorát.
+    # for ciklussal addig küldöm az adatot az oldalnak még el nem fogynak a sorok.
+    # Allure reportban kiírom a bevitt adatokat.
 
     def test_import_datas_from_csv(self):
         self.login()
@@ -219,6 +240,12 @@ class TestConduit:
 
     # TC8 Meglévő adat módosítás
 
+    # Settingsen belül a username input értékét elmentem változóba, létrehozok egy másik változót ehez felhasználom az előzőleg mentet
+    # változóm értékét + módosítva szöveg. Erre frissítem az username inputot. Ellenőrzést hajtok végre a jelenlegi
+    # username placeholder értéke és a módosított változóm értékét hasonlítom össze.
+
+
+
     def test_modification_of_existing_username(self):
         self.login()
 
@@ -239,6 +266,9 @@ class TestConduit:
         allure.attach("A meglévő adat módosítás teszteset sikeresen lefutott!", name="TC8")
 
     # TC9 Adat vagy adatok törlése.
+
+    # Üres input mező értékét változóba mentem, utána másik változóból értéket adok neki és elmentem.
+    # Ennek az értékét szintén változóba mentem. Csinálok egy ellenőrzést az üres mezőre és a kitöltött mezőre is.
 
     def test_delete_data(self):
         self.login()
@@ -295,6 +325,9 @@ class TestConduit:
 
     # TC10 Adatok lementése a felületről
 
+    # A tags.csv file-ba kimentem az oldalon található popular tags tartalmának első 10 elemét. Ellenőrzésnek pedig
+    # összehasonlítom a csv_data és a tag_data tartalmát.
+
     def test_save_data_to_csv(self):
         self.login()
 
@@ -325,6 +358,8 @@ class TestConduit:
 
 
     # TC11 Kijelentkezés
+
+    # Kijelentkezek az oldalról és ellenőrzőm hogy a login_link megtalálható e az oldalon.
 
     def test_logout(self):
         self.login()
